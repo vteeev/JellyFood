@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JellyFood - Zarejestruj się</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="register.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="registration-container">
+  <header class="registration-header">
+    <a class="header-logo" href="#">
+      <svg class="logo-icon" fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+      </svg>
+      <h2 class="logo-text">JellyFood</h2>
+    </a>
+    <a class="header-login-btn" href="#">Log In</a>
+  </header>
+
+  <main class="registration-main">
+    <div class="registration-card">
+      <div class="registration-card-header">
+        <p class="registration-title">Stwórz nowe konto</p>
+      </div>
+
+      <form class="registration-form">
+        <div class="form-fields-group">
+          <div class="form-field">
+            <label>Imię i nazwisko</label>
+            <input autocomplete="name" placeholder="Wpisz swoje imię i nazwisko" type="text"/>
+          </div>
+
+          <div class="form-field">
+            <label>Adres e-mail</label>
+            <input autocomplete="email" placeholder="Wpisz swój adres e-mail" type="email"/>
+          </div>
+
+          <div class="form-field">
+            <label>Hasło</label>
+            <div class="password-input-wrapper">
+              <input autocomplete="new-password" placeholder="Wpisz swoje hasło" type="password" class="password-input" id="password-1"/>
+              <button class="password-toggle-btn" type="button" onclick="togglePassword('password-1')">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>Powtórz hasło</label>
+            <div class="password-input-wrapper">
+              <input autocomplete="new-password" placeholder="Powtórz swoje hasło" type="password" class="password-input" id="password-2"/>
+              <button class="password-toggle-btn" type="button" onclick="togglePassword('password-2')">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkbox-container">
+          <input type="checkbox" id="terms" name="terms"/>
+          <div class="checkbox-label-text">
+            <label for="terms">
+              Akceptuję <a href="#">Regulamin</a> oraz <a href="#">Politykę Prywatności</a>.
+            </label>
+          </div>
+        </div>
+
+        <button class="submit-btn" type="submit">Zarejestruj się</button>
+      </form>
+
+      <div class="registration-footer">
+        <p>Masz już konto? <a href="#">Zaloguj się</a></p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+function togglePassword(id) {
+  const input = document.getElementById(id);
+  const btn = event.target.closest('.password-toggle-btn');
+  const icon = btn.querySelector('.material-symbols-outlined');
+  
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    icon.textContent = 'visibility';
+  }
+}
+</script>
+</body>
+</html>

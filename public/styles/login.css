@@ -1,0 +1,351 @@
+:root {
+  --primary: #A2E44D;
+  --background-light: #FFFFFF;
+  --background-dark: #1a2210;
+  --text-light: #333333;
+  --text-dark: #F0F0F0;
+  --text-secondary-light: #888888;
+  --text-secondary-dark: #A0A0A0;
+  --border-light: #dde8ce;
+  --border-dark: #4a543b;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-600: #4b5563;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body.dark-mode {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  font-feature-settings: 'liga';
+}
+
+/* Main Container */
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  flex-direction: column;
+  background-color: var(--background-light);
+  overflow-x: hidden;
+}
+
+.dark-mode .container {
+  background-color: var(--background-dark);
+}
+
+/* Layout */
+.layout-wrapper {
+  display: flex;
+  flex: 1;
+  align-items: stretch;
+}
+
+.layout-content {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* Left Image Section */
+.image-section {
+  display: none;
+  position: relative;
+  flex: 1;
+  height: 100%;
+}
+
+.image-section-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (min-width: 1024px) {
+  .image-section {
+    display: flex;
+  }
+}
+
+/* Right Form Section */
+.form-section {
+  display: flex;
+  width: 100%;
+  max-width: 32rem;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .form-section {
+    padding: 3rem 2.5rem;
+  }
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: -0.01em;
+  color: var(--primary);
+}
+
+/* Header Text */
+.form-header {
+  display: flex;
+  min-width: 288px;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-title {
+  font-size: 2.25rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.033em;
+  color: var(--text-light);
+}
+
+.dark-mode .form-title {
+  color: var(--text-dark);
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .form-subtitle {
+  color: var(--text-secondary-dark);
+}
+
+/* Form Container */
+.form-container {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Form Fields */
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  flex: 1;
+}
+
+.form-label {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  padding-bottom: 0.5rem;
+  color: var(--text-light);
+}
+
+.dark-mode .form-label {
+  color: var(--text-dark);
+}
+
+.form-input {
+  width: 100%;
+  flex: 1;
+  resize: none;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: normal;
+  line-height: 1.5;
+  padding: 15px;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .form-input {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+  border-color: #4b5563;
+}
+
+.form-input::placeholder {
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .form-input::placeholder {
+  color: var(--text-secondary-dark);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(162, 228, 77, 0.2);
+}
+
+/* Password Input Wrapper */
+.password-wrapper {
+  display: flex;
+  width: 100%;
+  flex: 1;
+  align-items: stretch;
+}
+
+.password-input {
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-right: none;
+  padding-right: 0.5rem;
+}
+
+.password-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d1d5db;
+  background-color: var(--background-light);
+  padding: 0.75rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  border-left: none;
+  color: var(--text-secondary-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .password-toggle {
+  border-color: #4b5563;
+  background-color: var(--background-dark);
+  color: var(--text-secondary-dark);
+}
+
+/* Forgot Password Link */
+.forgot-password {
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--primary);
+  text-decoration: underline;
+  text-align: right;
+  transition: all 0.2s ease;
+}
+
+.forgot-password:hover {
+  color: rgba(162, 228, 77, 0.8);
+}
+
+/* Submit Button */
+.btn-primary {
+  display: flex;
+  height: 3.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  background-color: var(--primary);
+  border: none;
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dark-mode .btn-primary {
+  color: var(--text-dark);
+}
+
+.btn-primary:hover {
+  background-color: rgba(162, 228, 77, 0.9);
+}
+
+.btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(162, 228, 77, 0.2);
+}
+
+/* Footer */
+.form-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.form-footer-text {
+  font-size: 0.875rem;
+  font-weight: normal;
+  line-height: 1.5;
+  color: var(--text-secondary-light);
+}
+
+.dark-mode .form-footer-text {
+  color: var(--text-secondary-dark);
+}
+
+.form-footer-link {
+  font-weight: 500;
+  color: var(--primary);
+  text-decoration: underline;
+  transition: all 0.2s ease;
+}
+
+.form-footer-link:hover {
+  color: rgba(162, 228, 77, 0.8);
+}

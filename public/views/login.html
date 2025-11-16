@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JellyFood - Zaloguj się</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="login.css" rel="stylesheet"/>
+</head>
+<body class="font-display">
+<div class="container">
+  <div class="layout-wrapper">
+    <div class="layout-content">
+      <!-- Left Image Section -->
+      <div class="image-section">
+        <div class="image-section-bg" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCmtYf4LnFugYlT9QTMEMiNyPCZYu4nbRVz-VF4xSjGeg30lDcch1Fq_RqPl8Yg0Clm8hKuiNpXSfisV2qh6cP7bTEC3821KJv0CWujkevtZFPYhgf56HsUnbbCFVSQzh11a_-ichZQPp5OnNr28r81w0l1bQlveYjvjrCzrlkP_pFt3mn2X-fTjsPYShQUqfr1XO_e5UwN7qx-whcJolXkqdEgLVePIXlyxVI-w416LLAfBsjneqoDns3HwCrFXhGVs8c7TVFj36o");'></div>
+      </div>
+
+      <!-- Right Form Section -->
+      <div class="form-section">
+        <div class="logo">
+          <h1 class="logo-text">JellyFood</h1>
+        </div>
+
+        <div class="form-header">
+          <p class="form-title">Witaj ponownie!</p>
+          <p class="form-subtitle">Zaloguj się, by zamówić</p>
+        </div>
+
+        <div class="form-container">
+          <div class="form-fields">
+            <div class="form-field-group">
+              <label class="form-label">E-mail lub nazwa użytkownika</label>
+              <input class="form-input" placeholder="wpisz swój e-mail lub nazwę użytkownika" type="email"/>
+            </div>
+
+            <div class="form-field-group">
+              <label class="form-label">Hasło</label>
+              <div class="password-wrapper">
+                <input class="form-input password-input" placeholder="wpisz swoje hasło" type="password" id="password-input"/>
+                <button class="password-toggle" type="button" onclick="togglePassword()">
+                  <span class="material-symbols-outlined" id="password-icon">visibility</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <a class="forgot-password" href="#">Zapomniałem hasła</a>
+
+          <button class="btn-primary">Zaloguj się</button>
+        </div>
+
+        <div class="form-footer">
+          <p class="form-footer-text">
+            Nie masz jeszcze konta? <a class="form-footer-link" href="#">Zarejestruj się</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePassword() {
+  const input = document.getElementById('password-input');
+  const icon = document.getElementById('password-icon');
+  
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.textContent = 'visibility_off';
+  } else {
+    input.type = 'password';
+    icon.textContent = 'visibility';
+  }
+}
+</script>
+</body></html>
