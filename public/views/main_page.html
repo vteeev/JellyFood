@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JellyFood - Zamów jedzenie z dostawą</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="main_page.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main-wrapper">
+<div class="content-wrapper">
+<div class="max-width-wrapper">
+<div class="inner-container">
+<!-- Top Navigation Bar -->
+<header>
+<div class="header-left">
+<div class="logo-section">
+<div class="logo-icon">
+<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+</svg>
+</div>
+<h2 class="logo-text">JellyFood</h2>
+</div>
+<label class="location-input">
+<span class="material-symbols-outlined">location_on</span>
+<input placeholder="Wpisz adres dostawy" value="Warszawa, Złota 44"/>
+</label>
+</div>
+<div class="header-right">
+<a class="login-link" href="#">Zaloguj się</a>
+<button class="register-btn">Zarejestruj się</button>
+</div>
+</header>
+
+<main>
+<!-- Page Heading -->
+<div class="page-heading">
+<div class="heading-left">
+<p class="heading-title">Twoje ulubione jedzenie, dostarczone błyskawicznie.</p>
+<p class="heading-subtitle">Znajdź najlepsze restauracje w swojej okolicy.</p>
+</div>
+</div>
+
+<!-- Search and Filter Bar -->
+<div class="search-section">
+<div class="search-wrapper">
+<label class="search-input-container">
+<div class="search-input-box">
+<div class="search-icon">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="search-input" placeholder="Szukaj restauracji lub dania..." value=""/>
+</div>
+</label>
+</div>
+<div class="filters-wrapper">
+<button class="filter-btn">
+<span class="material-symbols-outlined">swap_vert</span>
+<span>Sortuj</span>
+</button>
+<button class="filter-btn">
+<span>Rodzaj kuchni</span>
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</div>
+
+<!-- Restaurants -->
+<div class="restaurants-section">
+<div class="restaurants-grid">
+<!-- Restaurant Card 1 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUY-8uTxHfx_7I-Wv4BDy7wiu0BwnRvv7Ov7g2G3gv7evoEYO1O5CMtUvWvG6jmOS4NNzwQgX-ZdtLWOaxWlMbH29w7d1p_HaLu4-va_Cn8Y2MKqftmTe0NZlaWNAN1ySyv8WfpQ2EhN3bObb50iftHHCekjXTohNkEjCz-9PfxhxKCE5XFLrA9j5Lo_pjBzmad_A8CyAh8IrF-FB8K9bfdyN2fouNeFene6N4pwzP0ttvh8J4RR8jxXDaOa4duwfrjsYPeFfi-p4');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Pasta Paradise</p>
+<p class="restaurant-info">Włoska • 30-40 min • 15 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.8 (256 opinii)</span>
+</div>
+</div>
+</div>
+
+<!-- Restaurant Card 2 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBI5iu_qjgozajZwLIvru_LbCxMMtQ4DoVkuVVPfXGhHDnK2kuHNfZYd_eD6YfKCSLGfcuLljkqPMhwb91NpCrohf0mI9jYRh3HKTO_pgHFkTLkeGCDY09VTsYdutZzHGQM_oQxYyWkNTBqQznHr-NghAELleWqRlRRB1JIFm9BSeiBrMcTftNEy6VbDJ-TgW3R2F81879RVlriCi03JEq3X7IRU7Z5zvEeCg3kluZnJ1I4py2T8nV9bqjtuOW_VVWisuVyw-aAGGo');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Thai Palace</p>
+<p class="restaurant-info">Tajska • 25-35 min • 10 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.6 (189 opinii)</span>
+</div>
+</div>
+</div>
+
+<!-- Restaurant Card 3 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB09Dq3rhCl9Q3Q-jj9qpnLXGnMDzcFIK3H99IEJ89wDSInuz4FaPnMq-1DshKchDug8_9DfiwM-Euos-_wPfpbcU-o7AJ5wUf6M2m9z881BJi_UXlUaKmfA8rRDQcdDbYDttHtmpGbFyjZWN8tw43CnbXYeaLwZfcxM6TD4XNEilN92xf6eLAyvgFAu5Q0Ztv46hVHADso6LzUp_ifxHXB35Ll2zR1eOETbKzpiFcVszCIepbY6HDHuuRMnUXDyHbdg9g1ITfmK0A');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Burger House</p>
+<p class="restaurant-info">Amerykańska • 20-30 min • 12 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.7 (342 opinie)</span>
+</div>
+</div>
+</div>
+
+<!-- Restaurant Card 4 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6Zk-pHmGxF80-NM4N8BvLeNTszai7B3D2bCcyLB7CokyJiu-dXiG_mrKSkOmyZ_LNMDXjdQLSUdYMpjFe7XOHKX3tfoO3vtdaXjgxfk4I4GV2Vp3Z9cNcSGUaoxRe25YKJinXzbNi_LoDgJ2IG2gJ-YxYvpI5DVeuXRMQJro5Q9eAseFRab7xhbuJZ7nkIgjjbXUZr6xlYMp4GxPcn-1A5jmu-j5Pu-q6sqc1EVrYyeXYVx4Dk76dDdiMK2MJJbjeEfuJeReuyOQ');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Greek Taverna</p>
+<p class="restaurant-info">Grecka • 35-45 min • 18 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.5 (128 opinii)</span>
+</div>
+</div>
+</div>
+
+<!-- Restaurant Card 5 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqUuExKrjJAucDG7uS9e7QyL_tMbXAMAu2iYinbUJcNyseLXdY3KGJ_GjIHUMR3UGTz-RETQQmGp51WHOts0z60MDSvMQN4Ri0oHHcctIIAfdApla4Z5jgxTIMQrpY2w_RzoxCUHVInzFKJ7x4buPtNLLK-pXLvsadTFGYQvgNe004S9TB2jXuRGXCqzvL31Nlp-yrbzLlUtuufe6RBkAQole67yf0GfZ1jz7NagmrW3wy4uCbeOC9oQlk3nh6I9V3_qssEBGNmQ0');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Sushi Express</p>
+<p class="restaurant-info">Japońska • 15-25 min • 20 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.9 (567 opinii)</span>
+</div>
+</div>
+</div>
+
+<!-- Restaurant Card 6 -->
+<div class="restaurant-card">
+<div class="restaurant-card-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbBZnP7PSiP-HZjbxDnMWVZNlIgWLZ_REqRtp59EhJa2vCvHrWtQTRVpt-k4dOFJrBJTumsE16vLirF2a_3TbxGtWPHyh9l6NNl7UV5OqDfV5RzApYAnH2G1WeClaKp_SHoCukWkI4QkT4m8FR677YoiNvto2V0fvfL9usmOZVj7QUQjSdPzz76-7c-1_wmdQNJADGndYZuJtLrorXMDXeEDkHYLdXnMNSsk4aljMk2gvjqJ9gF_4B_Mf4-w5R-ZA3yW22hzKlNz8');"></div>
+<div class="restaurant-card-content">
+<p class="restaurant-name">Pizza Firenze</p>
+<p class="restaurant-info">Włoska • 20-30 min • 14 zł</p>
+<div class="restaurant-rating">
+<span class="rating-star">★</span>
+<span>4.7 (201 opinii)</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
