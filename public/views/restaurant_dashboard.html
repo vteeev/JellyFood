@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>JellyFood - Pasta Paradise</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="restaurant_dashboard.css" rel="stylesheet"/>
+</head>
+<body>
+    <div class="main-wrapper">
+        <!-- TopNavBar -->
+        <header>
+            <div class="header-container">
+                <div class="logo-section">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="logo-text">JellyFood</h2>
+                    </div>
+                    <nav>
+                        <a href="#">Restauracje</a>
+                        <a href="#">Promocje</a>
+                        <a href="#">Moje Zamówienia</a>
+                    </nav>
+                </div>
+                <div class="header-actions">
+                    <label class="search-input-wrapper">
+                        <span class="search-icon material-symbols-outlined">search</span>
+                        <input class="search-input" placeholder="Szukaj restauracji..." type="text"/>
+                    </label>
+                    <button class="cart-button">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                    </button>
+                    <div class="user-avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHYE7tG6-le2p0DAae-C4EMr5tjIEtR1RqEp_bMIQaSeWiUi8EJictwB_2nBLe0fc288S9j3tPYmWZvB3McEgSI4k9SMCzs9zsVVkVdpmQIda99pQKeQRBFAFpdrBgozq9-PcUKRi-EEphHg609ZITqdLlFRTj601ut8b9nRAkxNf9ed9o-jmVX3OA1nu4zoao6TVUpct38yDWTlqDCvjUvvY5hy58_payDLFdvUDcBPGkjkj8P1ZZsHAt0lnNETVegmPHOA0I59E");'></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <div class="content-max-width">
+                <!-- Left Column: Restaurant Details & Menu -->
+                <div class="menu-column">
+                    <!-- Restaurant Header Banner -->
+                    <div class="restaurant-banner">
+                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUY-8uTxHfx_7I-Wv4BDy7wiu0BwnRvv7Ov7g2G3gv7evoEYO1O5CMtUvWvG6jmOS4NNzwQgX-ZdtLWOaxWlMbH29w7d1p_HaLu4-va_Cn8Y2MKqftmTe0NZlaWNAN1ySyv8WfpQ2EhN3bObb50iftHHCekjXTohNkEjCz-9PfxhxKCE5XFLrA9j5Lo_pjBzmad_A8CyAh8IrF-FB8K9bfdyN2fouNeFene6N4pwzP0ttvh8J4RR8jxXDaOa4duwfrjsYPeFfi-p4" alt="Pasta Paradise Banner"/>
+                        <div class="banner-overlay"></div>
+                        <div class="banner-content">
+                            <div class="restaurant-logo">
+                                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2fjAeGQt7DONYEa_Z21x0J43KOkcZ_BvyZXae0geXOmt_UVRvoOpdGPFx9vUJ8DgbUeu_TzuhH5bHxXM7VeA_dcBK2mQySsVzTurKVvlVbvdPbRUIA-Rk_xYJ1d5qqAPASfKiyhcR5YJ3j1OXnjY54pKHCWAfDi9zAJFNaCfLox-zLWLwwPQ1rVy1bHUCuvC699aOA_ByFg_wpNwgi8gFTs2S_VSflae-W_fVgg6zL5aIhPVRROVfDxkBJCtkKiFavLA8PPwi_3M" alt="Pasta Paradise Logo"/>
+                            </div>
+                            <h1 class="restaurant-title">Pasta Paradise</h1>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant Info Card -->
+                    <div class="restaurant-info">
+                        <p class="restaurant-description">Autentyczna kuchnia włoska robiona z miłością. Spróbuj najlepszego makaronu w mieście, dostarczonego do Twoich drzwi. Szacunkowy czas dostawy: 30-40 min. Otwarte do 22:00.</p>
+                        <div class="restaurant-badges">
+                            <div class="badge star">
+                                <span class="star-icon material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <span class="badge-text">4.8</span>
+                                <span class="badge-reviews">(256 opinii)</span>
+                            </div>
+                            <div class="badge">
+                                <p class="badge-text">Włoska</p>
+                            </div>
+                            <div class="badge">
+                                <p class="badge-text">Makaron</p>
+                            </div>
+                            <div class="badge">
+                                <p class="badge-text">Wegetariańska</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Menu Navigation Bar (Sticky) -->
+                    <nav class="menu-nav">
+                        <div class="menu-nav-list">
+                            <a class="menu-nav-link active" href="#starters">Przystawki</a>
+                            <a class="menu-nav-link" href="#main-courses">Dania Główne</a>
+                            <a class="menu-nav-link" href="#desserts">Desery</a>
+                            <a class="menu-nav-link" href="#drinks">Napoje</a>
+                        </div>
+                    </nav>
+
+                    <!-- Menu Sections -->
+                    <div class="menu-sections">
+                        <!-- Starters Section -->
+                        <section class="menu-section" id="starters">
+                            <h2 class="section-title">Przystawki</h2>
+                            <div class="dishes-grid">
+                                <!-- Dish Card 1 -->
+                                <div class="dish-card">
+                                    <div class="dish-info">
+                                        <h3 class="dish-name">Bruschetta al Pomodoro</h3>
+                                        <p class="dish-description">Chleb grillowany ze świeżymi pomidorami, czosnkiem, bazylią i oliwą z oliwek.</p>
+                                        <p class="dish-price">22.00 zł</p>
+                                    </div>
+                                    <div class="dish-image-container">
+                                        <img class="dish-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI5iu_qjgozajZwLIvru_LbCxMMtQ4DoVkuVVPfXGhHDnK2kuHNfZYd_eD6YfKCSLGfcuLljkqPMhwb91NpCrohf0mI9jYRh3HKTO_pgHFkTLkeGCDY09VTsYdutZzHGQM_oQxYyWkNTBqQznHr-NghAELleWqRlRRB1JIFm9BSeiBrMcTftNEy6VbDJ-TgW3R2F81879RVlriCi03JEq3X7IRU7Z5zvEeCg3kluZnJ1I4py2T8nV9bqjtuOW_VVWisuVyw-aAGGo" alt="Bruschetta al Pomodoro"/>
+                                        <button class="add-button">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Card 2 -->
+                                <div class="dish-card">
+                                    <div class="dish-info">
+                                        <h3 class="dish-name">Sałatka Caprese</h3>
+                                        <p class="dish-description">Świeża mozzarella, pomidory i słodki bazylia, doprawione solą i oliwą z oliwek.</p>
+                                        <p class="dish-price">28.00 zł</p>
+                                    </div>
+                                    <div class="dish-image-container">
+                                        <img class="dish-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6Zk-pHmGxF80-NM4N8BvLeNTszai7B3D2bCcyLB7CokyJiu-dXiG_mrKSkOmyZ_LNMDXjdQLSUdYMpjFe7XOHKX3tfoO3vtdaXjgxfk4I4GV2Vp3Z9cNcSGUaoxRe25YKJinXzbNi_LoDgJ2IG2gJ-YxYvpI5DVeuXRMQJro5Q9eAseFRab7xhbuJZ7nkIgjjbXUZr6xlYMp4GxPcn-1A5jmu-j5Pu-q6sqc1EVrYyeXYVx4Dk76dDdiMK2MJJbjeEfuJeReuyOQ" alt="Sałatka Caprese"/>
+                                        <button class="add-button">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Main Courses Section -->
+                        <section class="menu-section" id="main-courses">
+                            <h2 class="section-title">Dania Główne</h2>
+                            <div class="dishes-grid">
+                                <!-- Dish Card 3 -->
+                                <div class="dish-card">
+                                    <div class="dish-info">
+                                        <h3 class="dish-name">Spaghetti Carbonara</h3>
+                                        <p class="dish-description">Klasyczne danie z jajkami, serem, boczkiem i czarnym pieprzem.</p>
+                                        <p class="dish-price">38.00 zł</p>
+                                    </div>
+                                    <div class="dish-image-container">
+                                        <img class="dish-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhuC0KdSxr0c4XqS78v4bszMVw4Cf6Eeg2e9-pq4xvjVYuHts8p9VRKdwll09ZAYBO-w0oYvHcmRGMrn2DmYb3AbruNtd2W3Zg9XaJL-eOo0M0k7QnrrdSq-gzbOS4d44NY_5YpQ7WniGsAvk9VdSNvU6pb1rT8OlZnl-UVfgn4uJbLj9upOw-uR5JeIen3VFPlV5E4isQyYWBiz4yZ5RMNVgIoF7nAAFsjFpg1ohOQJB1n7kiorznQPcp_2KafuoqmOA6E5hNcdc" alt="Spaghetti Carbonara"/>
+                                        <button class="add-button">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Card 4 -->
+                                <div class="dish-card">
+                                    <div class="dish-info">
+                                        <h3 class="dish-name">Margherita Pizza</h3>
+                                        <p class="dish-description">Prosta ale pyszna z pomidorami San Marzano, mozzarellą i bazylią.</p>
+                                        <p class="dish-price">32.00 zł</p>
+                                    </div>
+                                    <div class="dish-image-container">
+                                        <img class="dish-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgh9Ee-KVo5cfcZAxogi421HMc69AfFY-2YbjmT3t9SM3bgelYcvr-A7WfGcJyQmoXRsyo5hSb2JMONmNn0XNTVFQL2p_WO_uFliKq9bnXXEw76W0Drm-yRIhDTK8OnnUCxkMVZP82c2BtPjnCoMWPT5DbN19-fD6cYFpPLap8feWfEh2oBrvkwV3mMXGUJ-QlNBH8rppnkxDDc17eXtzv47641XiAqIv79oYjZpeIkwgibwfb3uq3DBxjwIS-SobYmNGdyBFdDGE" alt="Margherita Pizza"/>
+                                        <button class="add-button">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Dish Card 5 -->
+                                <div class="dish-card">
+                                    <div class="dish-info">
+                                        <h3 class="dish-name">Lasagna al Forno</h3>
+                                        <p class="dish-description">Warstwy makaronu z bogatym sosem mięsnym, beszamelem i parmezanem.</p>
+                                        <p class="dish-price">42.00 zł</p>
+                                    </div>
+                                    <div class="dish-image-container">
+                                        <img class="dish-image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW8TUB7UPPypbI21XqGKrnGst7Uei3nfS19HE6v4R_AXV0SnIalTZuwMIW6_Z31ppzJACvG2Ud6fCEbAJUlojGybWE2OTDPA1PYJ7w0AQi0xJs9zuF0sn3C0O_JEMeB3dqX-eg-nL_P4YTFVXfQ-msuVgrrk1IWaPZycDd-Kc5e86ELXDJXYEidqtd7e3M0gGFVl68fAp5LIkRFPP5Z5XIwlu2FvYJEDIRgGoJSOrapo1CFic0HRhl-i3lPxUkRBXGGBTKj7mVShk" alt="Lasagna al Forno"/>
+                                        <button class="add-button">
+                                            <span class="material-symbols-outlined">add</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                <!-- Right Column: Shopping Cart Panel -->
+                <aside class="order-panel">
+                    <div class="order-summary">
+                        <h2 class="order-title">Twoje Zamówienie</h2>
+                        
+                        <!-- Cart Items -->
+                        <div class="cart-items">
+                            <!-- Cart Item 1 -->
+                            <div class="cart-item">
+                                <div class="quantity-control">
+                                    <button class="qty-button">-</button>
+                                    <span class="quantity">1</span>
+                                    <button class="qty-button">+</button>
+                                </div>
+                                <p class="item-name">Spaghetti Carbonara</p>
+                                <p class="item-price">38.00 zł</p>
+                            </div>
+
+                            <!-- Cart Item 2 -->
+                            <div class="cart-item">
+                                <div class="quantity-control">
+                                    <button class="qty-button">-</button>
+                                    <span class="quantity">1</span>
+                                    <button class="qty-button">+</button>
+                                </div>
+                                <p class="item-name">Bruschetta al Pomodoro</p>
+                                <p class="item-price">22.00 zł</p>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="order-divider">
+                            <div class="order-summary-row">
+                                <span>Razem</span>
+                                <span>60.00 zł</span>
+                            </div>
+                            <div class="order-summary-row">
+                                <span>Opłata dostawy</span>
+                                <span>8.00 zł</span>
+                            </div>
+                            <div class="order-total">
+                                <span>Suma</span>
+                                <span>68.00 zł</span>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <button class="cta-button">Zamów Teraz</button>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+</body>
+</body></html>

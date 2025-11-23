@@ -1,0 +1,806 @@
+/* CSS Variables */
+:root {
+    --primary: #9df425;
+    --background-light: #ffffff;
+    --background-dark: #1a2210;
+    --text-light: #333333;
+    --text-dark: #f5f5f5;
+    --card-light: #f5f5f5;
+    --card-dark: #2a341e;
+    --text-secondary: #666666;
+    --border-light: #e5e5e5;
+    --border-dark: #333333;
+    --gray-200: #eeeeee;
+    --gray-300: #d4d4d4;
+    --gray-400: #a1a1a1;
+    --gray-500: #6d6d6d;
+    --gray-600: #565656;
+    --gray-700: #424242;
+}
+
+html.dark {
+    --text-light: #f5f5f5;
+    --border-light: #333333;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--background-light);
+    color: var(--text-light);
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+html.dark body {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+}
+
+/* Typography */
+h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 2.5rem;
+}
+
+h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+/* Layout Structure */
+.main-wrapper {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.content-max-width {
+    width: 100%;
+    max-width: 80rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+@media (max-width: 768px) {
+    .content-max-width {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Header */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    height: 5rem;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid rgba(229, 229, 229, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+html.dark header {
+    border-bottom-color: rgba(66, 66, 66, 0.8);
+    background-color: rgba(26, 34, 16, 0.8);
+}
+
+header .header-container {
+    display: flex;
+    width: 100%;
+    max-width: 80rem;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+    header .header-container {
+        padding: 0 1rem;
+    }
+}
+
+header .logo-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-light);
+}
+
+html.dark header .logo {
+    color: var(--text-dark);
+}
+
+header .logo-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+header .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+header nav {
+    display: none;
+    align-items: center;
+    gap: 2.25rem;
+}
+
+@media (min-width: 768px) {
+    header nav {
+        display: flex;
+    }
+}
+
+header nav a {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+html.dark header nav a {
+    color: var(--text-dark);
+}
+
+header nav a:hover {
+    color: var(--primary);
+}
+
+header .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header .search-input-wrapper {
+    display: none;
+    position: relative;
+}
+
+@media (min-width: 640px) {
+    header .search-input-wrapper {
+        display: flex;
+    }
+}
+
+header .search-icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray-400);
+}
+
+header .search-input {
+    height: 2.5rem;
+    width: 100%;
+    min-width: 10rem;
+    max-width: 16rem;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: var(--card-light);
+    color: var(--text-light);
+    padding-left: 2.5rem;
+    padding-right: 1rem;
+    font-size: 0.875rem;
+    transition: outline 0.3s;
+}
+
+html.dark header .search-input {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+}
+
+header .search-input::placeholder {
+    color: var(--gray-400);
+}
+
+html.dark header .search-input::placeholder {
+    color: var(--gray-400);
+}
+
+header .search-input:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(157, 244, 37, 0.5);
+}
+
+header .cart-button {
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    border: none;
+    background-color: var(--card-light);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+html.dark header .cart-button {
+    background-color: var(--card-dark);
+    color: var(--text-dark);
+}
+
+header .cart-button:hover {
+    background-color: var(--gray-200);
+}
+
+html.dark header .cart-button:hover {
+    background-color: var(--gray-700);
+}
+
+header .user-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Main Content */
+main {
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+main > div {
+    display: flex;
+    width: 100%;
+    max-width: 80rem;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    main > div {
+        flex-direction: row;
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    main > div {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Left Column */
+.menu-column {
+    width: 100%;
+    flex: 1;
+}
+
+/* Restaurant Header Banner */
+.restaurant-banner {
+    position: relative;
+    margin-bottom: 1.5rem;
+    height: 16rem;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background-color: var(--gray-300);
+}
+
+.restaurant-banner img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+}
+
+.banner-content {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.restaurant-logo {
+    display: flex;
+    height: 4rem;
+    width: 4rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background-color: white;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.restaurant-logo img {
+    height: 3rem;
+    width: 3rem;
+}
+
+.restaurant-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* Restaurant Info Card */
+.restaurant-info {
+    margin-bottom: 2rem;
+}
+
+.restaurant-description {
+    margin-bottom: 0.75rem;
+    max-width: 48rem;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+html.dark .restaurant-description {
+    color: var(--gray-400);
+}
+
+.restaurant-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+}
+
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    background-color: var(--card-light);
+    padding: 0.375rem 0.75rem;
+}
+
+html.dark .badge {
+    background-color: var(--card-dark);
+}
+
+.badge.star {
+    gap: 0.375rem;
+}
+
+.star-icon {
+    font-size: 1.125rem;
+    color: #fbbf24;
+}
+
+.badge-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.badge-reviews {
+    font-size: 0.875rem;
+    color: var(--gray-500);
+}
+
+html.dark .badge-reviews {
+    color: var(--gray-400);
+}
+
+/* Menu Navigation Bar (Sticky) */
+.menu-nav {
+    position: sticky;
+    top: 5rem;
+    z-index: 10;
+    margin: 0 -1.5rem 2rem -1.5rem;
+    border-top: 1px solid rgba(229, 229, 229, 0.8);
+    border-bottom: 1px solid rgba(229, 229, 229, 0.8);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    backdrop-filter: blur(4px);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+html.dark .menu-nav {
+    border-color: rgba(66, 66, 66, 0.8);
+    background-color: rgba(26, 34, 16, 0.8);
+}
+
+@media (max-width: 768px) {
+    .menu-nav {
+        margin-left: -1rem;
+        margin-right: -1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+.menu-nav-list {
+    display: flex;
+    height: 3.5rem;
+    align-items: center;
+    gap: 1.5rem;
+    white-space: nowrap;
+}
+
+.menu-nav-link {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.3s;
+    border-bottom: 2px solid transparent;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.menu-nav-link.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+}
+
+.menu-nav-link:hover {
+    color: var(--primary);
+}
+
+/* Menu Sections */
+.menu-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.menu-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+}
+
+.dishes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 1024px) {
+    .dishes-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Dish Card */
+.dish-card {
+    display: flex;
+    gap: 1rem;
+    border-radius: 0.75rem;
+    background-color: var(--card-light);
+    padding: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+}
+
+html.dark .dish-card {
+    background-color: var(--card-dark);
+}
+
+.dish-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dish-info {
+    flex: 1;
+}
+
+.dish-name {
+    font-weight: 700;
+}
+
+.dish-description {
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+html.dark .dish-description {
+    color: var(--gray-400);
+}
+
+.dish-price {
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+.dish-image-container {
+    position: relative;
+    height: 6rem;
+    width: 6rem;
+    flex-shrink: 0;
+}
+
+.dish-image {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+    object-fit: cover;
+}
+
+.add-button {
+    position: absolute;
+    bottom: -0.5rem;
+    right: -0.5rem;
+    display: flex;
+    height: 2rem;
+    width: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--primary);
+    color: var(--text-light);
+    cursor: pointer;
+    box-shadow: 0 10px 15px -3px rgba(157, 244, 37, 0.2);
+    transition: transform 0.3s;
+}
+
+.add-button:hover {
+    transform: scale(1.1);
+}
+
+/* Right Column - Shopping Cart Panel */
+.order-panel {
+    position: sticky;
+    top: 7rem;
+    display: none;
+    width: 100%;
+    max-width: 28rem;
+}
+
+@media (min-width: 1024px) {
+    .order-panel {
+        display: block;
+    }
+}
+
+.order-summary {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(229, 229, 229, 0.8);
+    background-color: var(--background-light);
+    padding: 1.5rem;
+}
+
+html.dark .order-summary {
+    border-color: rgba(66, 66, 66, 0.8);
+    background-color: var(--background-dark);
+}
+
+.order-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.qty-button {
+    display: flex;
+    height: 1.5rem;
+    width: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--gray-300);
+    background-color: transparent;
+    color: var(--gray-500);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.3s;
+}
+
+html.dark .qty-button {
+    border-color: var(--gray-600);
+}
+
+.qty-button:hover {
+    background-color: var(--gray-200);
+}
+
+html.dark .qty-button:hover {
+    background-color: var(--gray-700);
+}
+
+.quantity {
+    font-weight: 700;
+    width: 1rem;
+    text-align: center;
+}
+
+.item-name {
+    flex: 1;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.item-price {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.order-divider {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(229, 229, 229, 0.8);
+    padding-top: 1.5rem;
+}
+
+html.dark .order-divider {
+    border-top-color: rgba(66, 66, 66, 0.8);
+}
+
+.order-summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+html.dark .order-summary-row {
+    color: var(--gray-400);
+}
+
+.order-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+    font-size: 1.125rem;
+}
+
+.cta-button {
+    margin-top: 1.5rem;
+    height: 3rem;
+    width: 100%;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: var(--primary);
+    color: var(--text-light);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 20px 25px -5px rgba(157, 244, 37, 0.2);
+    transition: transform 0.3s;
+}
+
+.cta-button:hover {
+    transform: scale(1.02);
+}
+
+/* Material Symbols Icons */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content-max-width {
+        padding: 1.5rem 1rem;
+    }
+
+    h1 {
+        font-size: 1.875rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .menu-section {
+        gap: 1rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .dishes-grid {
+        gap: 1rem;
+    }
+
+    .dish-card {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+
+    .dish-image-container {
+        height: 5rem;
+        width: 5rem;
+    }
+}
+
+/* Dark Mode Smooth Transition */
+html.dark {
+    color-scheme: dark;
+}
