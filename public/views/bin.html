@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JellyFood - Twój Koszyk</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="/public/styles/bin.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="cart-container">
+<!-- Header -->
+<header>
+  <div class="header-wrapper">
+    <div class="header-left">
+      <div class="logo-icon">
+        <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+        </svg>
+      </div>
+      <h2 class="logo-text">JellyFood</h2>
+    </div>
+    <nav>
+      <a href="#">Menu</a>
+      <a href="#">Restauracje</a>
+      <a href="#">Promocje</a>
+      <a href="#">Kontakt</a>
+    </nav>
+    <div class="header-right">
+      <button class="header-icon-btn">
+        <span class="material-symbols-outlined">shopping_bag</span>
+      </button>
+      <div class="user-avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPwhhKFRCVuX9NxyuHXaVANffy407PBpBXmMtvmLam8pqiDDHwNKOl9TIjkPdbs9bk2OhL4jiaAU9tgiXUfnEVAkco7rLO9WBi9Gd32UZH_6sNrzb-Y8c-aIeuxFsvuZhphH6CyYCCcv1DbWHDUeuFqdY6ZxgkeONVYsgWk0nn-dPRxpbaV0XUsWA8EBuX69mD-5z1M01hz5jy0tiElZgzcLyX5yxPQw_aItOirV9Nlj05ypYIG8Fc6FLcRCrC5Wq7N62YXBT7PIk');"></div>
+    </div>
+  </div>
+</header>
+
+<!-- Main Content -->
+<main>
+  <div class="container">
+    <!-- Page Heading -->
+    <div class="page-heading">
+      <div class="heading-left">
+        <h1 class="page-title">Twój Koszyk</h1>
+        <p class="page-subtitle">Sprawdź swoje zamówienie i przejdź do płatności.</p>
+      </div>
+      <button class="continue-shopping-btn">
+        <span class="material-symbols-outlined">arrow_back</span>
+        <span>Kontynuuj zakupy</span>
+      </button>
+    </div>
+
+    <div class="cart-grid">
+      <!-- Items List -->
+      <div class="items-list">
+        <!-- Item 1 -->
+        <div class="cart-item">
+          <div class="item-info">
+            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB09Dq3rhCl9Q3Q-jj9qpnLXGnMDzcFIK3H99IEJ89wDSInuz4FaPnMq-1DshKchDug8_9DfiwM-Euos-_wPfpbcU-o7AJ5wUf6M2m9z881BJi_UXlUaKmfA8rRDQcdDbYDttHtmpGbFyjZWN8tw43CnbXYeaLwZfcxM6TD4XNEilN92xf6eLAyvgFAu5Q0Ztv46hVHADso6LzUp_ifxHXB35Ll2zR1eOETbKzpiFcVszCIepbY6HDHuuRMnUXDyHbdg9g1ITfmK0A');"></div>
+            <div class="item-details">
+              <p class="item-name">Burger Klasyczny</p>
+              <p class="item-description">Wołowina, ser, sałata, pomidor, sos</p>
+              <p class="item-price">25.00 zł</p>
+            </div>
+          </div>
+          <div class="item-controls">
+            <div class="quantity-control">
+              <button class="qty-btn">-</button>
+              <span class="qty-display">2</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <p class="item-total">50.00 zł</p>
+          </div>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="cart-item">
+          <div class="item-info">
+            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqUuExKrjJAucDG7uS9e7QyL_tMbXAMAu2iYinbUJcNyseLXdY3KGJ_GjIHUMR3UGTz-RETQQmGp51WHOts0z60MDSvMQN4Ri0oHHcctIIAfdApla4Z5jgxTIMQrpY2w_RzoxCUHVInzFKJ7x4buPtNLLK-pXLvsadTFGYQvgNe004S9TB2jXuRGXCqzvL31Nlp-yrbzLlUtuufe6RBkAQole67yf0GfZ1jz7NagmrW3wy4uCbeOC9oQlk3nh6I9V3_qssEBGNmQ0');"></div>
+            <div class="item-details">
+              <p class="item-name">Frytki Belgijskie</p>
+              <p class="item-description">Z sosem majonezowym</p>
+              <p class="item-price">12.00 zł</p>
+            </div>
+          </div>
+          <div class="item-controls">
+            <div class="quantity-control">
+              <button class="qty-btn">-</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <p class="item-total">12.00 zł</p>
+          </div>
+        </div>
+
+        <!-- Item 3 -->
+        <div class="cart-item">
+          <div class="item-info">
+            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbBZnP7PSiP-HZjbxDnMWVZNlIgWLZ_REqRtp59EhJa2vCvHrWtQTRVpt-k4dOFJrBJTumsE16vLirF2a_3TbxGtWPHyh9l6NNl7UV5OqDfV5RzApYAnH2G1WeClaKp_SHoCukWkI4QkT4m8FR677YoiNvto2V0fvfL9usmOZVj7QUQjSdPzz76-7c-1_wmdQNJADGndYZuJtLrorXMDXeEDkHYLdXnMNSsk4aljMk2gvjqJ9gF_4B_Mf4-w5R-ZA3yW22hzKlNz8');"></div>
+            <div class="item-details">
+              <p class="item-name">Sałatka Grecka</p>
+              <p class="item-description">Pomidory, ogórek, feta, oliwki</p>
+              <p class="item-price">22.00 zł</p>
+            </div>
+          </div>
+          <div class="item-controls">
+            <div class="quantity-control">
+              <button class="qty-btn">-</button>
+              <span class="qty-display">1</span>
+              <button class="qty-btn">+</button>
+            </div>
+            <p class="item-total">22.00 zł</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <aside>
+        <div class="summary-card">
+          <h2 class="summary-title">Podsumowanie</h2>
+          <div class="summary-items">
+            <div class="summary-row">
+              <span>Produkty</span>
+              <span>84.00 zł</span>
+            </div>
+            <div class="summary-row">
+              <span>Dostawa</span>
+              <span>9.99 zł</span>
+            </div>
+          </div>
+          <div class="summary-row total">
+            <span>Do zapłaty</span>
+            <span class="amount">93.99 zł</span>
+          </div>
+
+          <div class="promo-section">
+            <label class="promo-label" for="promo-code">Kod rabatowy</label>
+            <div class="promo-wrapper">
+              <input class="promo-input" id="promo-code" placeholder="Wpisz kod" type="text"/>
+              <button class="promo-btn">Użyj</button>
+            </div>
+          </div>
+
+          <button class="checkout-btn">Przejdź do zamówienia</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>
+</div>
+</body>
+</html>

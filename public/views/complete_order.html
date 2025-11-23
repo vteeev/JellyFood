@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JellyFood - Podsumowanie zamówienia</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<link href="/public/styles/complete_order.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrapper">
+<!-- Header -->
+<header>
+<div class="header-left">
+<div class="logo-icon">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="logo-text">JellyFood</h2>
+</div>
+<div class="header-right">
+<div class="nav-links">
+<a href="#">Menu</a>
+<a href="#">Restauracje</a>
+<a href="#">Oferty</a>
+<a href="#">Profil</a>
+</div>
+<button class="mobile-menu-btn">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+
+<!-- Main Content -->
+<main>
+<div class="content-grid">
+<!-- Left Column -->
+<div>
+<!-- Page Heading -->
+<div class="page-heading">
+<h1 class="heading-title">Finalizuj zamówienie</h1>
+</div>
+
+<!-- Delivery Address -->
+<div class="order-section">
+<div class="order-item">
+<div class="item-icon">
+<span class="material-symbols-outlined">location_on</span>
+</div>
+<div class="item-info">
+<p class="item-label">Adres dostawy</p>
+<p class="item-description">Krakowska 12/3, 31-062 Kraków</p>
+</div>
+<button class="change-btn">Zmień</button>
+</div>
+</div>
+
+<!-- Payment Method -->
+<div class="order-section">
+<div class="order-item">
+<div class="item-icon">
+<span class="material-symbols-outlined">credit_card</span>
+</div>
+<div class="item-info">
+<p class="item-label">Metoda płatności</p>
+<p class="item-description">Visa •••• 1234</p>
+</div>
+<button class="change-btn">Zmień</button>
+</div>
+</div>
+
+<!-- Delivery Options -->
+<div class="order-section">
+<p class="item-label" style="margin-bottom: 1rem;">Opcje dostawy</p>
+<div class="delivery-options">
+<label class="radio-option">
+<input checked type="radio" name="delivery_option"/>
+<span class="radio-label">Dostawa jak najszybciej</span>
+</label>
+<label class="radio-option">
+<input type="radio" name="delivery_option"/>
+<span class="radio-label">Zaplanuj na później</span>
+</label>
+</div>
+</div>
+
+<!-- Notes -->
+<div class="order-section">
+<label class="notes-label" for="notes">Uwagi do zamówienia</label>
+<textarea class="notes-textarea" id="notes" name="notes" placeholder="Dodaj instrukcje dla restauracji lub kuriera..." rows="3"></textarea>
+</div>
+
+<!-- CTA Button -->
+<button class="cta-button">Zamów i zapłać 96,50 zł</button>
+</div>
+
+<!-- Right Column: Order Summary -->
+<div>
+<div class="order-summary">
+<h3 class="summary-title">Twoje zamówienie</h3>
+<div class="summary-items">
+<div class="summary-item">
+<p class="summary-item-name">1x Pad Thai z krewetkami</p>
+<p class="summary-item-price">42,00 zł</p>
+</div>
+<div class="summary-item">
+<p class="summary-item-name">1x Zupa Tom Yum</p>
+<p class="summary-item-price">25,00 zł</p>
+</div>
+<div class="summary-item">
+<p class="summary-item-name">2x Lemoniada tajska</p>
+<p class="summary-item-price">20,00 zł</p>
+</div>
+</div>
+<div class="summary-divider">
+<div class="summary-row">
+<p>Wartość produktów</p>
+<p>87,00 zł</p>
+</div>
+<div class="summary-row">
+<p>Koszt dostawy</p>
+<p>9,50 zł</p>
+</div>
+</div>
+<div class="summary-row total">
+<p>Do zapłaty</p>
+<p>96,50 zł</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+</html>
