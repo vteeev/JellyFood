@@ -188,4 +188,57 @@ class RestaurantRepository extends Repository
         
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Pobranie menu restauracji z kategoriami
+     */
+    public function getRestaurantMenu(int $restaurantId): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT 
+                mc.id as category_id,
+                mc.name as category_name,
+                mi.id,
+                mi.name,
+                mi.description,
+                mi.price,
+                mi.image,
+                mi.is_active
+            FROM menu_categories mc
+            LEFT JOIN menu_items mi ON mc.id = mi.category_id
+            WHERE mc.restaurant_id = :restaurant_id
+                AND (mi.is_active = true OR mi.is_active IS NULL)
+            ORDER BY mc.id, mi.id
+        ');
+        $stmt->execute([':restaurant_id' => $restaurantId]);
+        
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Grupowanie według kategorii
+        $menu = [];
+        foreach ($results as $row) {
+            $categoryId = $row['category_id'];
+            
+            if (!isset($menu[$categoryId])) {
+                $menu[$categoryId] = [
+                    'id' => $categoryId,
+                    'name' => $row['category_name'],
+                    'items' => []
+                ];
+            }
+            
+            if ($row['id']) {
+                $menu[$categoryId]['items'][] = [
+                    'id' => $row['id'],
+                    'name' => $row['name'],
+                    'description' => $row['description'],
+                    'price' => $row['price'],
+                    'image' => $row['image'],
+                    'is_active' => $row['is_active']
+                ];
+            }
+        }
+        
+        return array_values($menu);
+    }
 }

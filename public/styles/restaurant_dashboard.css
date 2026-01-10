@@ -90,6 +90,8 @@ p {
     max-width: 80rem;
     padding-left: 2rem;
     padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 768px) {
@@ -317,7 +319,6 @@ main > div {
 /* Left Column */
 .menu-column {
     width: 100%;
-    flex: 1;
 }
 
 /* Restaurant Header Banner */
@@ -603,11 +604,11 @@ html.dark .dish-description {
 
 /* Right Column - Shopping Cart Panel */
 .order-panel {
-    position: sticky;
-    top: 7rem;
-    display: none;
+    display: none; /* This line is retained to maintain the original functionality */
     width: 100%;
     max-width: 28rem;
+    position: sticky;
+    top: 7rem;
 }
 
 @media (min-width: 1024px) {
@@ -615,7 +616,6 @@ html.dark .dish-description {
         display: block;
     }
 }
-
 .order-summary {
     border-radius: 0.75rem;
     border: 1px solid rgba(229, 229, 229, 0.8);

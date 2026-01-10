@@ -19,6 +19,7 @@ class restaurants
         return match ($action) {
             'index' => $this->handleIndex($request),
             'get' => $this->handleGet($params),
+            'menu' => $this->handleMenu($params),
             'search' => $this->handleSearch($request),
             'kitchen-types' => $this->handleKitchenTypes(),
             'by-kitchen' => $this->handleByKitchenType($request),
@@ -82,6 +83,37 @@ class restaurants
             json_response([
                 'success' => false,
                 'message' => 'Błąd pobrania restauracji',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * GET /restaurants/menu/1
+     * Pobranie menu restauracji po ID
+     */
+    private function handleMenu(array $params): string
+    {
+        if (empty($params[0])) {
+            return json_encode([
+                'success' => false,
+                'message' => 'Brak ID restauracji',
+            ]);
+        }
+
+        $id = (int)$params[0];
+
+        try {
+            $menu = $this->restaurantRepository->getRestaurantMenu($id);
+
+            json_response([
+                'success' => true,
+                'data' => $menu,
+            ]);
+        } catch (Exception $e) {
+            json_response([
+                'success' => false,
+                'message' => 'Błąd pobrania menu',
                 'error' => $e->getMessage(),
             ], 500);
         }
