@@ -8,7 +8,7 @@
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-<link href="register.css" rel="stylesheet"/>
+<link href="/public/styles/register.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="registration-container">
@@ -28,23 +28,30 @@
         <p class="registration-title">Stwórz nowe konto</p>
       </div>
 
-      <form class="registration-form">
+      <form class="registration-form" id="registerForm">
+        <div id="errorMessage" class="error-message" style="display: none;"></div>
+
         <div class="form-fields-group">
           <div class="form-field">
             <label>Imię i nazwisko</label>
-            <input autocomplete="name" placeholder="Wpisz swoje imię i nazwisko" type="text"/>
+            <input autocomplete="name" placeholder="Wpisz swoje imię i nazwisko" type="text" name="full_name" required/>
           </div>
 
           <div class="form-field">
             <label>Adres e-mail</label>
-            <input autocomplete="email" placeholder="Wpisz swój adres e-mail" type="email"/>
+            <input autocomplete="email" placeholder="Wpisz swój adres e-mail" type="email" name="email" required/>
+          </div>
+
+          <div class="form-field">
+            <label>Numer telefonu (opcjonalnie)</label>
+            <input autocomplete="tel" placeholder="Wpisz swój numer telefonu" type="tel" name="phone"/>
           </div>
 
           <div class="form-field">
             <label>Hasło</label>
             <div class="password-input-wrapper">
-              <input autocomplete="new-password" placeholder="Wpisz swoje hasło" type="password" class="password-input" id="password-1"/>
-              <button class="password-toggle-btn" type="button" onclick="togglePassword('password-1')">
+              <input autocomplete="new-password" placeholder="Wpisz swoje hasło (min. 8 znaków)" type="password" class="password-input" name="password" id="password-1" required/>
+              <button class="password-toggle-btn" type="button" onclick="togglePassword(event, 'password-1')">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
             </div>
@@ -53,8 +60,8 @@
           <div class="form-field">
             <label>Powtórz hasło</label>
             <div class="password-input-wrapper">
-              <input autocomplete="new-password" placeholder="Powtórz swoje hasło" type="password" class="password-input" id="password-2"/>
-              <button class="password-toggle-btn" type="button" onclick="togglePassword('password-2')">
+              <input autocomplete="new-password" placeholder="Powtórz swoje hasło" type="password" class="password-input" name="password_confirm" id="password-2" required/>
+              <button class="password-toggle-btn" type="button" onclick="togglePassword(event, 'password-2')">
                 <span class="material-symbols-outlined">visibility</span>
               </button>
             </div>
@@ -62,7 +69,7 @@
         </div>
 
         <div class="checkbox-container">
-          <input type="checkbox" id="terms" name="terms"/>
+          <input type="checkbox" id="terms" name="terms" required/>
           <div class="checkbox-label-text">
             <label for="terms">
               Akceptuję <a href="#">Regulamin</a> oraz <a href="#">Politykę Prywatności</a>.
@@ -70,18 +77,19 @@
           </div>
         </div>
 
-        <button class="submit-btn" type="submit">Zarejestruj się</button>
+        <button class="submit-btn" type="submit" id="submitBtn">Zarejestruj się</button>
       </form>
 
       <div class="registration-footer">
-        <p>Masz już konto? <a href="#">Zaloguj się</a></p>
+        <p>Masz już konto? <a href="/login">Zaloguj się</a></p>
       </div>
     </div>
   </main>
 </div>
 
 <script>
-function togglePassword(id) {
+function togglePassword(event, id) {
+  event.preventDefault();
   const input = document.getElementById(id);
   const btn = event.target.closest('.password-toggle-btn');
   const icon = btn.querySelector('.material-symbols-outlined');
@@ -94,6 +102,74 @@ function togglePassword(id) {
     icon.textContent = 'visibility';
   }
 }
+
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  const form = e.target;
+  const submitBtn = document.getElementById('submitBtn');
+  const errorDiv = document.getElementById('errorMessage');
+  
+  // Zbiór danych
+  const formData = {
+    full_name: form.full_name.value,
+    email: form.email.value,
+    phone: form.phone.value || null,
+    password: form.password.value,
+    password_confirm: form.password_confirm.value,
+  };
+  
+  // Walidacja hasła
+  if (formData.password !== formData.password_confirm) {
+    errorDiv.textContent = 'Hasła się nie zgadzają!';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  if (formData.password.length < 8) {
+    errorDiv.textContent = 'Hasło musi mieć co najmniej 8 znaków!';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  if (!form.terms.checked) {
+    errorDiv.textContent = 'Musisz zaakceptować regulamin i politykę prywatności!';
+    errorDiv.style.display = 'block';
+    return;
+  }
+  
+  // Wyłączenie przycisku
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Rejestrowanie...';
+  errorDiv.style.display = 'none';
+  
+  try {
+    const response = await fetch('/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(formData),
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Redirect do logowania
+      alert('Rejestracja pomyślna! Zaloguj się teraz.');
+      window.location.href = '/login';
+    } else {
+      errorDiv.textContent = data.message || 'Błąd podczas rejestracji!';
+      errorDiv.style.display = 'block';
+    }
+  } catch (error) {
+    errorDiv.textContent = 'Błąd sieci: ' + error.message;
+    errorDiv.style.display = 'block';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Zarejestruj się';
+  }
+});
 </script>
 </body>
 </html>

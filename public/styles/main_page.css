@@ -182,6 +182,12 @@ body.dark-mode .location-input input::placeholder {
   gap: 1rem;
 }
 
+#authButtons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .login-link {
   font-size: 0.875rem;
   font-weight: 500;
@@ -478,4 +484,174 @@ body.dark-mode .restaurant-rating {
 
 .rating-star {
   color: #fbbf24;
+}
+
+/* User Profile Styles */
+.user-profile {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: background-color 0.2s ease;
+}
+
+body.dark-mode .user-menu-btn {
+  color: white;
+}
+
+.user-menu-btn:hover {
+  background-color: var(--surface-light);
+}
+
+body.dark-mode .user-menu-btn:hover {
+  background-color: #4a543b;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+body.dark-mode .user-dropdown {
+  background: #2D3748;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.user-menu-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+body.dark-mode .user-menu-item {
+  color: #e2e8f0;
+}
+
+.user-menu-item:hover {
+  background-color: var(--surface-light);
+}
+
+body.dark-mode .user-menu-item:hover {
+  background-color: #4a543b;
+}
+
+.user-menu-divider {
+  margin: 0.5rem 0;
+  border: none;
+  border-top: 1px solid #e2e8f0;
+}
+
+body.dark-mode .user-menu-divider {
+  border-top-color: #4a543b;
+}
+
+.logout-btn {
+  color: #e53e3e;
+  font-weight: 500;
+}
+
+body.dark-mode .logout-btn {
+  color: #fc8181;
+}
+
+.logout-btn:hover {
+  background-color: #fff5f5;
+}
+
+body.dark-mode .logout-btn:hover {
+  background-color: rgba(252, 129, 129, 0.1);
+}
+
+/* Filter Menu Styles */
+.filter-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  z-index: 1000;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+body.dark-mode .filter-menu {
+  background: #2D3748;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.filter-option {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  transition: background-color 0.2s ease;
+}
+
+body.dark-mode .filter-option {
+  color: #e2e8f0;
+}
+
+.filter-option:hover {
+  background-color: var(--surface-light);
+}
+
+body.dark-mode .filter-option:hover {
+  background-color: #4a543b;
+}
+
+.filter-option.active {
+  background-color: var(--primary);
+  color: var(--background-light);
+  font-weight: 500;
+}
+
+body.dark-mode .filter-option.active {
+  background-color: var(--primary);
+  color: black;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
 }
