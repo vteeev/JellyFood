@@ -262,6 +262,27 @@ body.dark-mode {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(157, 244, 37, 0.2);
 }
+/* Form Section Title */
+.form-section-title {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.form-section-title h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-light);
+}
+
+.dark-mode .form-section-title {
+  border-bottom-color: var(--border-dark);
+}
+
+.dark-mode .form-section-title h3 {
+  color: var(--text-dark);
+}
 
 /* Password Input Wrapper */
 .password-input-wrapper {

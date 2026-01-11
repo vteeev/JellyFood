@@ -29,7 +29,7 @@ class auth
      * POST /auth/register
      * 
      * Wymagane pola: email, password, password_confirm, full_name
-     * Opcjonalnie: phone
+    * Opcjonalnie: phone, street, apartment_number, city, postal_code, country
      */
     private function handleRegister(array $request): string
     {
@@ -42,6 +42,18 @@ class auth
         $passwordConfirm = $request['password_confirm'] ?? '';
         $fullName = sanitize($request['full_name'] ?? '');
         $phone = sanitize($request['phone'] ?? null);
+
+        // Dane adresowe (opcjonalne)
+        $address = null;
+        if (isset($request['street']) && isset($request['city']) && isset($request['postal_code'])) {
+            $address = [
+                'street' => sanitize($request['street']),
+                'apartment_number' => sanitize($request['apartment_number'] ?? null),
+                'city' => sanitize($request['city']),
+                'postal_code' => sanitize($request['postal_code']),
+                'country' => sanitize($request['country'] ?? 'Polska'),
+            ];
+        }
 
         // Walidacja
         if (empty($email) || empty($password) || empty($fullName)) {
@@ -59,7 +71,7 @@ class auth
         }
 
         // Rejestracja
-        $result = $this->authService->register($email, $password, $fullName, $phone);
+        $result = $this->authService->register($email, $password, $fullName, $phone, $address);
 
         json_response($result);
     }
@@ -115,12 +127,14 @@ class auth
             unset($user['password_hash']);
 
             return json_encode([
+                'authenticated' => true,
                 'success' => true,
                 'user' => $user,
             ]);
         }
 
         return json_encode([
+            'authenticated' => false,
             'success' => false,
             'message' => 'Użytkownik nie jest zalogowany',
         ]);

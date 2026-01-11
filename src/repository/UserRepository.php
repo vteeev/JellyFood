@@ -43,10 +43,11 @@ class UserRepository extends Repository
     /**
      * Rejestracja nowego użytkownika (klient)
      */
-    public function register(string $email, string $passwordHash, string $fullName, string $phone = null): ?int
+    public function register(string $email, string $passwordHash, string $fullName, string $phone = null, array $address = null): ?int
     {
         try {
             $pdo = $this->database->connect();
+            $pdo->beginTransaction();
             
             // Pobranie ID roli "klient"
             $roleStmt = $pdo->prepare('SELECT id FROM roles WHERE name = :role LIMIT 1');
@@ -54,7 +55,7 @@ class UserRepository extends Repository
             $role = $roleStmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$role) {
-                // Jeśli rola nie istnieje, tworzysz ją (shouldn't happen, ale na wypadek)
+                $pdo->rollBack();
                 return null;
             }
             
@@ -74,13 +75,70 @@ class UserRepository extends Repository
             
             if ($result) {
                 $insertedId = $stmt->fetch(PDO::FETCH_ASSOC);
-                return (int)$insertedId['id'];
+                $userId = (int)$insertedId['id'];
+                
+                // Zapisz adres jeśli został podany
+                if ($address && isset($address['street']) && isset($address['city']) && isset($address['postal_code'])) {
+                    $addressStmt = $pdo->prepare('
+                        INSERT INTO user_addresses (user_id, street, building_number, apartment_number, city, postal_code, country)
+                        VALUES (:user_id, :street, :building_number, :apartment_number, :city, :postal_code, :country)
+                    ');
+                    
+                    // Parsuj street na street i building_number (uproszczone - można rozbudować)
+                    $streetParts = $this->parseStreetAddress($address['street']);
+                    
+                    $addressStmt->execute([
+                        ':user_id' => $userId,
+                        ':street' => $streetParts['street'],
+                        ':building_number' => $streetParts['building_number'],
+                        ':apartment_number' => $address['apartment_number'] ?? null,
+                        ':city' => $address['city'],
+                        ':postal_code' => $address['postal_code'],
+                        ':country' => $address['country'] ?? 'Polska',
+                    ]);
+                }
+                
+                $pdo->commit();
+                return $userId;
             }
             
             return null;
         } catch (PDOException $e) {
+            if (isset($pdo)) {
+                $pdo->rollBack();
+            }
             return null;
         }
+    }
+
+    /**
+     * Parsuje adres ulicy na ulicę i numer budynku
+     */
+    private function parseStreetAddress(string $fullAddress): array
+    {
+        $parts = explode(' ', trim($fullAddress));
+        $buildingNumber = '';
+        $street = '';
+
+        // Znajdź ostatni element zawierający cyfry
+        for ($i = count($parts) - 1; $i >= 0; $i--) {
+            if (preg_match('/\d/', $parts[$i])) {
+                $buildingNumber = $parts[$i];
+                $street = implode(' ', array_slice($parts, 0, $i));
+                break;
+            }
+        }
+
+        // Jeśli nie znaleziono numeru, traktuj wszystko jako ulicę
+        if (empty($buildingNumber)) {
+            $street = $fullAddress;
+            $buildingNumber = '';
+        }
+
+        return [
+            'street' => $street ?: $fullAddress,
+            'building_number' => $buildingNumber ?: '0'
+        ];
     }
 
     /**
@@ -108,5 +166,72 @@ class UserRepository extends Repository
         ');
         
         return $stmt->execute([':id' => $userId]);
+
+    }
+    /**
+    * Pobierz główny adres użytkownika (ostatnio dodany)
+     */
+    public function getUserAddress(int $userId): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT id, street, building_number, apartment_number, city, postal_code, country
+            FROM user_addresses
+            WHERE user_id = :user_id
+            ORDER BY id DESC
+            LIMIT 1
+        ');
+        $stmt->execute([':user_id' => $userId]);
+        $address = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($address) {
+            // Formatuj adres do wyświetlenia
+            $fullStreet = $address['street'] . ' ' . $address['building_number'];
+            if ($address['apartment_number']) {
+                $fullStreet .= '/' . $address['apartment_number'];
+            }
+            $address['street'] = $fullStreet;
+            return $address;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Pobierz wszystkie adresy użytkownika
+     */
+    public function getUserAddresses(int $userId): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT id, street, building_number, apartment_number, city, postal_code, country
+            FROM user_addresses
+            WHERE user_id = :user_id
+            ORDER BY id DESC
+        ');
+        $stmt->execute([':user_id' => $userId]);
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+    * Zapisz nowy adres użytkownika
+     */
+    public function saveUserAddress(int $userId, string $street, string $city, string $postalCode, ?string $apartmentNumber = null, ?string $country = 'Polska'): bool
+    {
+        $streetParts = $this->parseStreetAddress($street);
+
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO user_addresses (user_id, street, building_number, apartment_number, city, postal_code, country)
+            VALUES (:user_id, :street, :building_number, :apartment_number, :city, :postal_code, :country)
+        ');
+        
+        return $stmt->execute([
+            ':user_id' => $userId,
+            ':street' => $streetParts['street'],
+            ':building_number' => $streetParts['building_number'],
+            ':apartment_number' => $apartmentNumber,
+            ':city' => $city,
+            ':postal_code' => $postalCode,
+            ':country' => $country ?? 'Polska'
+        ]);
     }
 }

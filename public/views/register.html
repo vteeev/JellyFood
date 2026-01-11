@@ -19,7 +19,7 @@
       </svg>
       <h2 class="logo-text">JellyFood</h2>
     </a>
-    <a class="header-login-btn" href="#">Log In</a>
+    <a class="header-login-btn" href="/login">Log In</a>
   </header>
 
   <main class="registration-main">
@@ -68,6 +68,32 @@
           </div>
         </div>
 
+        <div class="form-section-title">
+          <h3>Adres dostawy</h3>
+        </div>
+
+        <div class="form-fields-group">
+          <div class="form-field">
+            <label>Ulica i numer budynku</label>
+            <input autocomplete="street-address" placeholder="np. Krakowska 12" type="text" name="street" required/>
+          </div>
+
+          <div class="form-field">
+            <label>Numer mieszkania (opcjonalnie)</label>
+            <input placeholder="np. 3" type="text" name="apartment_number"/>
+          </div>
+
+          <div class="form-field">
+            <label>Miasto</label>
+            <input autocomplete="address-level2" placeholder="np. Kraków" type="text" name="city" required/>
+          </div>
+
+          <div class="form-field">
+            <label>Kod pocztowy</label>
+            <input autocomplete="postal-code" placeholder="np. 31-062" type="text" name="postal_code" required/>
+          </div>
+        </div>
+
         <div class="checkbox-container">
           <input type="checkbox" id="terms" name="terms" required/>
           <div class="checkbox-label-text">
@@ -86,7 +112,6 @@
     </div>
   </main>
 </div>
-
 <script>
 function togglePassword(event, id) {
   event.preventDefault();
@@ -117,6 +142,11 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     phone: form.phone.value || null,
     password: form.password.value,
     password_confirm: form.password_confirm.value,
+    street: form.street.value,
+    apartment_number: form.apartment_number.value || null,
+    city: form.city.value,
+    postal_code: form.postal_code.value,
+    country: 'Polska'
   };
   
   // Walidacja hasła
