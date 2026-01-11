@@ -24,14 +24,8 @@
 </div>
 <div class="header-right">
 <div class="nav-links">
-<a href="#">Menu</a>
-<a href="#">Restauracje</a>
-<a href="#">Oferty</a>
-<a href="#">Profil</a>
+<a href="/">Restauracje</a>
 </div>
-<button class="mobile-menu-btn">
-<span class="material-symbols-outlined">menu</span>
-</button>
 </div>
 </header>
 
@@ -47,44 +41,16 @@
 
 <!-- Delivery Address -->
 <div class="order-section">
-<div class="order-item">
+<div class="order-item" id="addressSection">
 <div class="item-icon">
 <span class="material-symbols-outlined">location_on</span>
 </div>
 <div class="item-info">
 <p class="item-label">Adres dostawy</p>
-<p class="item-description">Krakowska 12/3, 31-062 Kraków</p>
+<p class="item-description" id="deliveryAddress">Ładowanie...</p>
 </div>
-<button class="change-btn">Zmień</button>
-</div>
-</div>
-
-<!-- Payment Method -->
-<div class="order-section">
-<div class="order-item">
-<div class="item-icon">
-<span class="material-symbols-outlined">credit_card</span>
-</div>
-<div class="item-info">
-<p class="item-label">Metoda płatności</p>
-<p class="item-description">Visa •••• 1234</p>
-</div>
-<button class="change-btn">Zmień</button>
-</div>
-</div>
-
-<!-- Delivery Options -->
-<div class="order-section">
-<p class="item-label" style="margin-bottom: 1rem;">Opcje dostawy</p>
-<div class="delivery-options">
-<label class="radio-option">
-<input checked type="radio" name="delivery_option"/>
-<span class="radio-label">Dostawa jak najszybciej</span>
-</label>
-<label class="radio-option">
-<input type="radio" name="delivery_option"/>
-<span class="radio-label">Zaplanuj na później</span>
-</label>
+<button class="change-btn" id="changeAddressBtn" onclick="openAddressModal()" style="display: none;">Zmień</button>
+<button class="change-btn" id="addAddressBtn" onclick="openAddressModal()" style="display: none;">Dodaj adres</button>
 </div>
 </div>
 
@@ -95,45 +61,242 @@
 </div>
 
 <!-- CTA Button -->
-<button class="cta-button">Zamów i zapłać 96,50 zł</button>
+<button class="cta-button" id="payButton" onclick="processPayment()">Ładowanie...</button>
 </div>
 
 <!-- Right Column: Order Summary -->
 <div>
 <div class="order-summary">
 <h3 class="summary-title">Twoje zamówienie</h3>
-<div class="summary-items">
-<div class="summary-item">
-<p class="summary-item-name">1x Pad Thai z krewetkami</p>
-<p class="summary-item-price">42,00 zł</p>
-</div>
-<div class="summary-item">
-<p class="summary-item-name">1x Zupa Tom Yum</p>
-<p class="summary-item-price">25,00 zł</p>
-</div>
-<div class="summary-item">
-<p class="summary-item-name">2x Lemoniada tajska</p>
-<p class="summary-item-price">20,00 zł</p>
-</div>
+<div class="summary-items" id="orderItemsList">
+<!-- Produkty załadowane dynamicznie -->
 </div>
 <div class="summary-divider">
 <div class="summary-row">
 <p>Wartość produktów</p>
-<p>87,00 zł</p>
+<p id="subtotalPrice">0,00 zł</p>
 </div>
 <div class="summary-row">
 <p>Koszt dostawy</p>
-<p>9,50 zł</p>
+<p>9,99 zł</p>
 </div>
 </div>
 <div class="summary-row total">
 <p>Do zapłaty</p>
-<p>96,50 zł</p>
+<p id="totalPrice">9,99 zł</p>
 </div>
 </div>
 </div>
 </div>
 </main>
 </div>
+
+<!-- Modal dla adresu -->
+<div class="address-modal" id="addressModal" style="display: none;">
+<div class="modal-content">
+<button class="modal-close" onclick="closeAddressModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+<h2 class="modal-title">Adres dostawy</h2>
+<form id="addressForm" onsubmit="saveAddress(event)">
+<div class="form-group">
+<label for="street">Ulica i numer</label>
+<input type="text" id="street" name="street" required placeholder="np. Krakowska 12/3">
+</div>
+<div class="form-group">
+<label for="city">Miasto</label>
+<input type="text" id="city" name="city" required placeholder="np. Kraków">
+</div>
+<div class="form-group">
+<label for="postalCode">Kod pocztowy</label>
+<input type="text" id="postalCode" name="postalCode" required placeholder="np. 31-062">
+</div>
+<button type="submit" class="save-address-btn">Zapisz adres</button>
+</form>
+</div>
+</div>
+
+<script>
+let cart = [];
+let userAddress = null;
+
+// Załaduj dane przy starcie
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadUserAddress();
+    loadCartItems();
+});
+
+// Załaduj adres użytkownika z bazy
+async function loadUserAddress() {
+    try {
+        const response = await fetch('/auth/check');
+        
+        if (!response.ok) {
+            console.error('Błąd odpowiedzi serwera:', response.status);
+            window.location.href = '/login';
+            return;
+        }
+        
+        const data = await response.json();
+        
+        if (data.authenticated && data.user) {
+            const userId = data.user.id;
+            
+            // Pobierz adres użytkownika
+            const addressResponse = await fetch(`/users/${userId}/address`);
+            
+            if (!addressResponse.ok) {
+                console.error('Błąd pobierania adresu:', addressResponse.status);
+                document.getElementById('deliveryAddress').textContent = 'Brak zapisanego adresu';
+                document.getElementById('addAddressBtn').style.display = 'block';
+                return;
+            }
+            
+            const addressData = await addressResponse.json();
+            
+            if (addressData.success && addressData.address) {
+                userAddress = addressData.address;
+                document.getElementById('deliveryAddress').textContent = 
+                    `${userAddress.street}, ${userAddress.postal_code} ${userAddress.city}`;
+                document.getElementById('changeAddressBtn').style.display = 'block';
+            } else {
+                document.getElementById('deliveryAddress').textContent = 'Brak zapisanego adresu';
+                document.getElementById('addAddressBtn').style.display = 'block';
+            }
+        } else {
+            console.log('Użytkownik nie jest zalogowany');
+            window.location.href = '/login';
+        }
+    } catch (error) {
+        console.error('Błąd ładowania adresu:', error);
+        // Przy błędzie sieci nie przekierowuj automatycznie
+        alert('Błąd połączenia z serwerem. Sprawdź połączenie internetowe.');
+    }
+}
+
+// Załaduj produkty z koszyka
+function loadCartItems() {
+    cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
+    
+    if (cart.length === 0) {
+        alert('Twój koszyk jest pusty!');
+        window.location.href = '/';
+        return;
+    }
+    
+    const itemsContainer = document.getElementById('orderItemsList');
+    itemsContainer.innerHTML = cart.map(item => `
+        <div class="summary-item">
+            <p class="summary-item-name">${item.quantity}x ${item.name}</p>
+            <p class="summary-item-price">${(item.price * item.quantity).toFixed(2)} zł</p>
+        </div>
+    `).join('');
+    
+    // Oblicz sumę
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const delivery = 9.99;
+    const total = subtotal + delivery;
+    
+    document.getElementById('subtotalPrice').textContent = `${subtotal.toFixed(2)} zł`;
+    document.getElementById('totalPrice').textContent = `${total.toFixed(2)} zł`;
+    document.getElementById('payButton').textContent = `Zamów i zapłać ${total.toFixed(2)} zł`;
+}
+
+// Modal adresu
+function openAddressModal() {
+    const modal = document.getElementById('addressModal');
+    modal.style.display = 'flex';
+    
+    if (userAddress) {
+        document.getElementById('street').value = userAddress.street || '';
+        document.getElementById('city').value = userAddress.city || '';
+        document.getElementById('postalCode').value = userAddress.postal_code || '';
+    }
+}
+
+function closeAddressModal() {
+    document.getElementById('addressModal').style.display = 'none';
+}
+
+// Zapisz adres
+async function saveAddress(event) {
+    event.preventDefault();
+    
+    const formData = {
+        street: document.getElementById('street').value,
+        city: document.getElementById('city').value,
+        postal_code: document.getElementById('postalCode').value
+    };
+    
+    try {
+        const response = await fetch('/users/address', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            await loadUserAddress();
+            closeAddressModal();
+        } else {
+            alert('Błąd zapisu adresu: ' + (data.message || 'Nieznany błąd'));
+        }
+    } catch (error) {
+        console.error('Błąd zapisywania adresu:', error);
+        alert('Błąd połączenia z serwerem');
+    }
+}
+
+// Przetwarzanie płatności (Stripe)
+async function processPayment() {
+    if (!userAddress) {
+        alert('Proszę dodać adres dostawy przed złożeniem zamówienia');
+        return;
+    }
+    
+    if (cart.length === 0) {
+        alert('Twój koszyk jest pusty!');
+        return;
+    }
+    
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const delivery = 9.99;
+    const total = subtotal + delivery;
+    const notes = document.getElementById('notes').value;
+    
+    try {
+        // Tutaj będzie integracja ze Stripe
+        // Na razie symulujemy przekierowanie
+        const orderData = {
+            items: cart,
+            address: userAddress,
+            notes: notes,
+            subtotal: subtotal,
+            delivery: delivery,
+            total: total
+        };
+        
+        // TODO: Integracja ze Stripe Checkout
+        console.log('Dane zamówienia:', orderData);
+        alert('Integracja z płatnościami Stripe będzie wkrótce!');
+        
+    } catch (error) {
+        console.error('Błąd przetwarzania płatności:', error);
+        alert('Wystąpił błąd podczas przetwarzania zamówienia');
+    }
+}
+
+// Zamknij modal klikając poza nim
+window.onclick = function(event) {
+    const modal = document.getElementById('addressModal');
+    if (event.target === modal) {
+        closeAddressModal();
+    }
+}
+</script>
 </body>
 </html>

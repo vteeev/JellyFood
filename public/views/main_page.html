@@ -32,6 +32,10 @@
 </label>
 </div>
 <div class="header-right">
+<button class="cart-button" id="cartButton" onclick="window.location.href='/public/views/bin.html'">
+  <span class="material-symbols-outlined">shopping_cart</span>
+  <span class="cart-badge" id="cartBadge">0</span>
+</button>
 <div id="authButtons">
   <a class="login-link" href="/login">Zaloguj się</a>
   <button class="register-btn" onclick="window.location.href='/register'">Zarejestruj się</button>
@@ -345,4 +349,18 @@ async function logout() {
     console.error('Błąd wylogowania:', error);
   }
 }
+
+// Funkcja aktualizacji licznika koszyka
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const badge = document.getElementById('cartBadge');
+  if (badge) {
+    badge.textContent = totalItems;
+    badge.style.display = totalItems > 0 ? 'flex' : 'none';
+  }
+}
+
+// Aktualizuj licznik koszyka przy ładowaniu strony
+updateCartBadge();
 </script>
