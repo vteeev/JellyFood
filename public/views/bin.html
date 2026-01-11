@@ -6,7 +6,7 @@
 <title>JellyFood - Twój Koszyk</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
 <link href="/public/styles/bin.css" rel="stylesheet"/>
 </head>
@@ -24,10 +24,7 @@
       <h2 class="logo-text">JellyFood</h2>
     </div>
     <nav>
-      <a href="#">Menu</a>
-      <a href="#">Restauracje</a>
-      <a href="#">Promocje</a>
-      <a href="#">Kontakt</a>
+      <a href="/">Restauracje</a>
     </nav>
     <div class="header-right">
       <button class="header-icon-btn">
@@ -47,7 +44,7 @@
         <h1 class="page-title">Twój Koszyk</h1>
         <p class="page-subtitle">Sprawdź swoje zamówienie i przejdź do płatności.</p>
       </div>
-      <button class="continue-shopping-btn">
+      <button class="continue-shopping-btn" onclick="window.history.back()">
         <span class="material-symbols-outlined">arrow_back</span>
         <span>Kontynuuj zakupy</span>
       </button>
@@ -55,66 +52,8 @@
 
     <div class="cart-grid">
       <!-- Items List -->
-      <div class="items-list">
-        <!-- Item 1 -->
-        <div class="cart-item">
-          <div class="item-info">
-            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB09Dq3rhCl9Q3Q-jj9qpnLXGnMDzcFIK3H99IEJ89wDSInuz4FaPnMq-1DshKchDug8_9DfiwM-Euos-_wPfpbcU-o7AJ5wUf6M2m9z881BJi_UXlUaKmfA8rRDQcdDbYDttHtmpGbFyjZWN8tw43CnbXYeaLwZfcxM6TD4XNEilN92xf6eLAyvgFAu5Q0Ztv46hVHADso6LzUp_ifxHXB35Ll2zR1eOETbKzpiFcVszCIepbY6HDHuuRMnUXDyHbdg9g1ITfmK0A');"></div>
-            <div class="item-details">
-              <p class="item-name">Burger Klasyczny</p>
-              <p class="item-description">Wołowina, ser, sałata, pomidor, sos</p>
-              <p class="item-price">25.00 zł</p>
-            </div>
-          </div>
-          <div class="item-controls">
-            <div class="quantity-control">
-              <button class="qty-btn">-</button>
-              <span class="qty-display">2</span>
-              <button class="qty-btn">+</button>
-            </div>
-            <p class="item-total">50.00 zł</p>
-          </div>
-        </div>
-
-        <!-- Item 2 -->
-        <div class="cart-item">
-          <div class="item-info">
-            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqUuExKrjJAucDG7uS9e7QyL_tMbXAMAu2iYinbUJcNyseLXdY3KGJ_GjIHUMR3UGTz-RETQQmGp51WHOts0z60MDSvMQN4Ri0oHHcctIIAfdApla4Z5jgxTIMQrpY2w_RzoxCUHVInzFKJ7x4buPtNLLK-pXLvsadTFGYQvgNe004S9TB2jXuRGXCqzvL31Nlp-yrbzLlUtuufe6RBkAQole67yf0GfZ1jz7NagmrW3wy4uCbeOC9oQlk3nh6I9V3_qssEBGNmQ0');"></div>
-            <div class="item-details">
-              <p class="item-name">Frytki Belgijskie</p>
-              <p class="item-description">Z sosem majonezowym</p>
-              <p class="item-price">12.00 zł</p>
-            </div>
-          </div>
-          <div class="item-controls">
-            <div class="quantity-control">
-              <button class="qty-btn">-</button>
-              <span class="qty-display">1</span>
-              <button class="qty-btn">+</button>
-            </div>
-            <p class="item-total">12.00 zł</p>
-          </div>
-        </div>
-
-        <!-- Item 3 -->
-        <div class="cart-item">
-          <div class="item-info">
-            <div class="item-image" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBbBZnP7PSiP-HZjbxDnMWVZNlIgWLZ_REqRtp59EhJa2vCvHrWtQTRVpt-k4dOFJrBJTumsE16vLirF2a_3TbxGtWPHyh9l6NNl7UV5OqDfV5RzApYAnH2G1WeClaKp_SHoCukWkI4QkT4m8FR677YoiNvto2V0fvfL9usmOZVj7QUQjSdPzz76-7c-1_wmdQNJADGndYZuJtLrorXMDXeEDkHYLdXnMNSsk4aljMk2gvjqJ9gF_4B_Mf4-w5R-ZA3yW22hzKlNz8');"></div>
-            <div class="item-details">
-              <p class="item-name">Sałatka Grecka</p>
-              <p class="item-description">Pomidory, ogórek, feta, oliwki</p>
-              <p class="item-price">22.00 zł</p>
-            </div>
-          </div>
-          <div class="item-controls">
-            <div class="quantity-control">
-              <button class="qty-btn">-</button>
-              <span class="qty-display">1</span>
-              <button class="qty-btn">+</button>
-            </div>
-            <p class="item-total">22.00 zł</p>
-          </div>
-        </div>
+      <div class="items-list" id="cartItemsList">
+        <!-- Będzie ładowane dynamicznie -->
       </div>
 
       <!-- Order Summary -->
@@ -124,7 +63,7 @@
           <div class="summary-items">
             <div class="summary-row">
               <span>Produkty</span>
-              <span>84.00 zł</span>
+              <span id="subtotalAmount">0.00 zł</span>
             </div>
             <div class="summary-row">
               <span>Dostawa</span>
@@ -133,7 +72,7 @@
           </div>
           <div class="summary-row total">
             <span>Do zapłaty</span>
-            <span class="amount">93.99 zł</span>
+            <span class="amount" id="totalAmount">9.99 zł</span>
           </div>
 
           <div class="promo-section">
@@ -144,12 +83,92 @@
             </div>
           </div>
 
-          <button class="checkout-btn">Przejdź do zamówienia</button>
+          <button class="checkout-btn" id="checkoutBtn">Przejdź do zamówienia</button>
         </div>
       </aside>
     </div>
   </div>
 </main>
 </div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderCart();
+});
+
+function renderCart() {
+    const cartContainer = document.getElementById('cartItemsList');
+    
+    if (cart.length === 0) {
+        cartContainer.innerHTML = `
+            <div style="text-align: center; padding: 3rem;">
+                <span class="material-symbols-outlined" style="font-size: 4rem; color: var(--gray-400);">shopping_cart</span>
+                <p style="font-size: 1.25rem; margin-top: 1rem; color: var(--gray-500);">Twój koszyk jest pusty</p>
+                <button onclick="window.history.back()" style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: var(--primary); border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Wróć do zakupów</button>
+            </div>
+        `;
+        updateSummary();
+        return;
+    }
+    
+    cartContainer.innerHTML = cart.map((item, index) => `
+        <div class="cart-item">
+          <div class="item-info">
+            <div class="item-image" style="background-image: url('${item.image}');"></div>
+            <div class="item-details">
+              <p class="item-name">${item.name}</p>
+              <p class="item-price">${item.price.toFixed(2)} zł</p>
+            </div>
+          </div>
+          <div class="item-controls">
+            <div class="quantity-control">
+              <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
+              <span class="qty-display">${item.quantity}</span>
+              <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
+            </div>
+            <p class="item-total">${(item.price * item.quantity).toFixed(2)} zł</p>
+            <button class="remove-btn" onclick="removeItem(${index})" title="Usuń">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+          </div>
+        </div>
+    `).join('');
+    
+    updateSummary();
+}
+
+function updateQuantity(index, delta) {
+    cart[index].quantity = Math.max(1, cart[index].quantity + delta);
+    localStorage.setItem('jellyFoodCart', JSON.stringify(cart));
+    renderCart();
+}
+
+function removeItem(index) {
+    cart.splice(index, 1);
+    localStorage.setItem('jellyFoodCart', JSON.stringify(cart));
+    renderCart();
+}
+
+function updateSummary() {
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const delivery = cart.length > 0 ? 9.99 : 0;
+    const total = subtotal + delivery;
+    
+    document.getElementById('subtotalAmount').textContent = `${subtotal.toFixed(2)} zł`;
+    document.getElementById('totalAmount').textContent = `${total.toFixed(2)} zł`;
+}
+
+document.getElementById('checkoutBtn').addEventListener('click', () => {
+    if (cart.length === 0) {
+        alert('Twój koszyk jest pusty!');
+        return;
+    }
+    
+    // Przekierowanie do complete_order.html
+    window.location.href = '/public/views/complete_order.html';
+});
+</script>
 </body>
 </html>

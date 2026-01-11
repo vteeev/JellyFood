@@ -29,12 +29,9 @@
                     </nav>
                 </div>
                 <div class="header-actions">
-                    <label class="search-input-wrapper">
-                        <span class="search-icon material-symbols-outlined">search</span>
-                        <input class="search-input" placeholder="Szukaj restauracji..." type="text"/>
-                    </label>
-                    <button class="cart-button">
+                    <button class="cart-button" id="cartButton">
                         <span class="material-symbols-outlined">shopping_cart</span>
+                        <span class="cart-badge" id="cartBadge">0</span>
                     </button>
                     <div class="user-avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHYE7tG6-le2p0DAae-C4EMr5tjIEtR1RqEp_bMIQaSeWiUi8EJictwB_2nBLe0fc288S9j3tPYmWZvB3McEgSI4k9SMCzs9zsVVkVdpmQIda99pQKeQRBFAFpdrBgozq9-PcUKRi-EEphHg609ZITqdLlFRTj601ut8b9nRAkxNf9ed9o-jmVX3OA1nu4zoao6TVUpct38yDWTlqDCvjUvvY5hy58_payDLFdvUDcBPGkjkj8P1ZZsHAt0lnNETVegmPHOA0I59E");'></div>
                 </div>
@@ -181,10 +178,15 @@ function displayMenu(menuCategories) {
             grid.className = 'dishes-grid';
             
             category.items.forEach((item, index) => {
-                const card = document.createElement('div');
+                const card = document.createElement('button');
                 card.className = 'dish-card';
+                card.setAttribute('data-dish-id', item.id);
+                card.setAttribute('data-dish-name', item.name);
+                card.setAttribute('data-dish-price', item.price);
+                card.setAttribute('data-dish-description', item.description || '');
                 
                 const imageUrl = item.image || images[index % images.length];
+                card.setAttribute('data-dish-image', imageUrl);
                 
                 card.innerHTML = `
                     <div class="dish-info">
@@ -196,6 +198,8 @@ function displayMenu(menuCategories) {
                         <img class="dish-image" src="${imageUrl}" alt="${item.name}"/>
                     </div>
                 `;
+                
+                card.addEventListener('click', () => openDishModal(item, imageUrl));
                 
                 grid.appendChild(card);
             });
@@ -209,6 +213,137 @@ function displayMenu(menuCategories) {
         menuContainer.innerHTML = '<p style="padding: 2rem; text-align: center;">Brak dań w menu</p>';
     }
 }
+
+// Koszyk - localStorage
+let cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
+
+function updateCartBadge() {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const badge = document.getElementById('cartBadge');
+    if (badge) {
+        badge.textContent = totalItems;
+        badge.style.display = totalItems > 0 ? 'flex' : 'none';
+    }
+}
+
+// Przekierowanie do koszyka
+document.getElementById('cartButton').addEventListener('click', () => {
+    window.location.href = '/public/views/bin.html';
+});
+
+// Aktualizuj licznik koszyka przy ładowaniu strony
+updateCartBadge();
+
+// Modal szczegółów dania
+let currentDishPrice = 0;
+
+function openDishModal(item, imageUrl) {
+    currentDishPrice = parseFloat(item.price);
+    modalQuantity = 1;
+    
+    const modal = document.createElement('div');
+    modal.className = 'dish-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            <div class="modal-dish-image">
+                <img src="${imageUrl}" alt="${item.name}"/>
+            </div>
+            <div class="modal-dish-details">
+                <h2 class="modal-dish-name">${item.name}</h2>
+                <p class="modal-dish-description">${item.description || 'Pyszne danie z naszej kuchni'}</p>
+                <div class="modal-ingredients">
+                    <h3>Składniki:</h3>
+                    <p>${item.ingredients || 'Świeże, wysokiej jakości produkty'}</p>
+                </div>
+                <div class="modal-price-section">
+                    <p class="modal-dish-price" id="modalPrice">${currentDishPrice.toFixed(2)} zł</p>
+                    <div class="modal-quantity-control">
+                        <button class="qty-button" onclick="changeQuantity(-1)">−</button>
+                        <span class="quantity" id="modalQuantity">1</span>
+                        <button class="qty-button" onclick="changeQuantity(1)">+</button>
+                    </div>
+                </div>
+                <button class="add-to-cart-button" id="addToCartBtn">Dodaj do koszyka</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    
+    // Event listener dla przycisku dodawania
+    document.getElementById('addToCartBtn').addEventListener('click', () => {
+        addToCart(item.id, item.name, item.price, imageUrl);
+    });
+    
+    // Zamknij modal po kliknięciu poza contentem
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    const modal = document.querySelector('.dish-modal');
+    if (modal) {
+        modal.remove();
+    }
+    modalQuantity = 1;
+}
+
+let modalQuantity = 1;
+
+function changeQuantity(delta) {
+    modalQuantity = Math.max(1, modalQuantity + delta);
+    document.getElementById('modalQuantity').textContent = modalQuantity;
+    
+    // Aktualizuj cenę
+    const totalPrice = currentDishPrice * modalQuantity;
+    document.getElementById('modalPrice').textContent = `${totalPrice.toFixed(2)} zł`;
+}
+
+function addToCart(id, name, price, image) {
+    const existingItem = cart.find(item => item.id === id);
+    
+    if (existingItem) {
+        existingItem.quantity += modalQuantity;
+    } else {
+        cart.push({
+            id,
+            name,
+            price: parseFloat(price),
+            image,
+            quantity: modalQuantity,
+            restaurantId
+        });
+    }
+    
+    localStorage.setItem('jellyFoodCart', JSON.stringify(cart));
+    
+    // Zamknij modal i pokaż powiadomienie
+    closeModal();
+    
+    showNotification(`${name} dodano do koszyka!`);
+    updateCartBadge();
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
 </script>
 </body>
-</body></html>
+</html>

@@ -394,6 +394,25 @@ body.dark-mode .item-price {
   }
 }
 
+.remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.remove-btn:hover {
+  background-color: rgba(239, 68, 68, 0.2);
+  transform: scale(1.05);
+}
+
 .quantity-control {
   display: flex;
   align-items: center;

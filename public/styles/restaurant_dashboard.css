@@ -262,6 +262,7 @@ header .cart-button {
     color: var(--text-light);
     cursor: pointer;
     transition: background-color 0.3s;
+    position: relative;
 }
 
 html.dark header .cart-button {
@@ -275,6 +276,24 @@ header .cart-button:hover {
 
 html.dark header .cart-button:hover {
     background-color: var(--gray-700);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.375rem;
+    border-radius: 9999px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1;
 }
 
 header .user-avatar {
@@ -803,4 +822,200 @@ html.dark .order-summary-row {
 /* Dark Mode Smooth Transition */
 html.dark {
     color-scheme: dark;
+}
+
+/* Modal dla szczegółów dania */
+.dish-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    padding: 1rem;
+}
+
+.modal-content {
+    position: relative;
+    background-color: var(--background-light);
+    border-radius: 1rem;
+    max-width: 48rem;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+html.dark .modal-content {
+    background-color: var(--background-dark);
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--text-light);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+html.dark .modal-close {
+    background-color: rgba(42, 52, 30, 0.9);
+    color: var(--text-dark);
+}
+
+.modal-close:hover {
+    transform: scale(1.1);
+}
+
+.modal-dish-image {
+    width: 100%;
+    height: 20rem;
+    overflow: hidden;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.modal-dish-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-dish-details {
+    padding: 2rem;
+}
+
+.modal-dish-name {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.modal-dish-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+html.dark .modal-dish-description {
+    color: var(--gray-400);
+}
+
+.modal-ingredients {
+    background-color: var(--card-light);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+html.dark .modal-ingredients {
+    background-color: var(--card-dark);
+}
+
+.modal-ingredients h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.modal-ingredients p {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+html.dark .modal-ingredients p {
+    color: var(--gray-400);
+}
+
+.modal-price-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+
+.modal-dish-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.modal-quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background-color: var(--card-light);
+    border-radius: 2rem;
+    padding: 0.5rem 1rem;
+}
+
+html.dark .modal-quantity-control {
+    background-color: var(--card-dark);
+}
+
+.modal-quantity-control .quantity {
+    font-size: 1.125rem;
+    font-weight: 700;
+    min-width: 2rem;
+    text-align: center;
+}
+
+.add-to-cart-button {
+    width: 100%;
+    height: 3.5rem;
+    border-radius: 0.75rem;
+    border: none;
+    background-color: var(--primary);
+    color: var(--text-light);
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 20px 25px -5px rgba(157, 244, 37, 0.3);
+    transition: transform 0.2s;
+}
+
+.add-to-cart-button:hover {
+    transform: scale(1.02);
+}
+
+/* Powiadomienie */
+.notification {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 100;
+    background-color: var(--primary);
+    color: var(--text-light);
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(2rem);
+    transition: all 0.3s ease;
+}
+
+.notification.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Poprawka dla dish-card jako button */
+.dish-card {
+    text-align: left;
+    border: none;
+    font-family: inherit;
 }
