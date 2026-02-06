@@ -14,6 +14,7 @@ class RestaurantRepository extends Repository
                 r.id,
                 r.name,
                 r.description,
+                r.image_url,
                 r.phone,
                 r.street,
                 r.building_number,
@@ -45,6 +46,7 @@ class RestaurantRepository extends Repository
                 r.id,
                 r.name,
                 r.description,
+                r.image_url,
                 r.phone,
                 r.street,
                 r.building_number,
@@ -76,6 +78,7 @@ class RestaurantRepository extends Repository
                 r.id,
                 r.name,
                 r.description,
+                r.image_url,
                 r.phone,
                 r.street,
                 r.building_number,
@@ -99,12 +102,45 @@ class RestaurantRepository extends Repository
     }
 
     /**
+     * Pobranie restauracji po mieście
+     */
+    public function getRestaurantsByCity(string $city): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT DISTINCT
+                r.id,
+                r.name,
+                r.description,
+                r.image_url,
+                r.phone,
+                r.street,
+                r.building_number,
+                r.apartment_number,
+                r.city,
+                r.postal_code,
+                r.created_at,
+                r.is_active,
+                ARRAY_AGG(kt.name) as kitchen_types
+            FROM restaurants r
+            LEFT JOIN restaurant_kitchen_types rkt ON r.id = rkt.restaurant_id
+            LEFT JOIN kitchen_types kt ON rkt.kitchen_type_id = kt.id
+            WHERE r.is_active = true
+                AND r.city = :city
+            GROUP BY r.id
+            ORDER BY r.name ASC
+        ');
+        $stmt->execute([':city' => $city]);
+        
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Pobranie wszystkich typów kuchni
      */
     public function getAllKitchenTypes(): array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT id, name
+            SELECT id, name, image_url
             FROM kitchen_types
             ORDER BY name ASC
         ');
@@ -167,6 +203,7 @@ class RestaurantRepository extends Repository
                 r.id,
                 r.name,
                 r.description,
+                r.image_url,
                 r.phone,
                 r.street,
                 r.building_number,
@@ -240,5 +277,20 @@ class RestaurantRepository extends Repository
         }
         
         return array_values($menu);
+    }
+
+    /**
+     * Pobierz ID restauracji użytkownika (jeśli jest pracownikiem)
+     */
+    public function getRestaurantByUserId(int $userId): ?int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT restaurant_id FROM restaurant_system WHERE user_id = :user_id
+        ');
+
+        $stmt->execute([':user_id' => $userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result ? (int)$result['restaurant_id'] : null;
     }
 }

@@ -213,6 +213,31 @@ class UserRepository extends Repository
     }
 
     /**
+     * Aktualizuj dane użytkownika (imię, telefon)
+     */
+    public function updateUser(int $userId, string $fullName, ?string $phone = null): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE users
+            SET full_name = :full_name, phone = :phone, updated_at = NOW()
+            WHERE id = :id
+            RETURNING id, full_name, email, phone, created_at
+        ');
+
+        $result = $stmt->execute([
+            ':full_name' => $fullName,
+            ':phone' => $phone,
+            ':id' => $userId
+        ]);
+
+        if ($result) {
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        return null;
+    }
+
+    /**
     * Zapisz nowy adres użytkownika
      */
     public function saveUserAddress(int $userId, string $street, string $city, string $postalCode, ?string $apartmentNumber = null, ?string $country = 'Polska'): bool
