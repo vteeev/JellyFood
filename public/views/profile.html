@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mój profil - JellyFood</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="/public/styles/main_page.css" rel="stylesheet"/>
+    <link href="/public/styles/profile.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        <div class="max-width-wrapper">
+            <div class="inner-container">
+                <!-- Top Navigation Bar -->
+                <header>
+                    <div class="header-left">
+                        <div class="logo-section">
+                            <div class="logo-icon">
+                                <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="logo-text">JellyFood</h2>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="cart-button" id="cartButton" onclick="window.location.href='/public/views/bin.html'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </button>
+                        <div id="userProfile" style="display: none;" class="user-profile">
+                            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                                <span class="material-symbols-outlined">account_circle</span>
+                                <span id="userName"></span>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </button>
+                            <div id="userDropdown" class="user-dropdown" style="display: none;">
+                                <a href="/profile" class="user-menu-item">Mój profil</a>
+                                <a href="/orders" class="user-menu-item">Moje zamówienia</a>
+                                <hr class="user-menu-divider"/>
+                                <button onclick="logout()" class="user-menu-item logout-btn">Wyloguj się</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main>
+                    <a href="/" class="back-button">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Powrót do głównej
+                    </a>
+
+                    <div class="profile-container">
+                        <div id="successMessage" class="success-message"></div>
+                        <div id="errorMessage" class="error-message"></div>
+
+                        <!-- Profile Header -->
+                        <div class="profile-header">
+                            <div class="profile-avatar" id="avatar">👤</div>
+                            <div class="profile-info">
+                                <h1 id="profileName">Załadowywanie...</h1>
+                                <p id="profileEmail">-</p>
+                                <p id="profilePhone">-</p>
+                                <p id="joinDate">-</p>
+                            </div>
+                        </div>
+
+                        <!-- Personal Information Form -->
+                        <form id="profileForm" class="form-section">
+                            <h2>Dane osobowe</h2>
+
+                            <div class="form-group">
+                                <label for="fullName">Imię i nazwisko</label>
+                                <input type="text" id="fullName" name="full_name" required/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" disabled style="background: #f0f0f0; cursor: not-allowed;"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Telefon</label>
+                                <input type="tel" id="phone" name="phone" placeholder="+48"/>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="btn-save">Zapisz zmiany</button>
+                                <button type="reset" class="btn-cancel">Anuluj</button>
+                            </div>
+                        </form>
+
+                        <!-- Address Form -->
+                        <form id="addressForm" class="form-section">
+                            <h2>Adres dostawy</h2>
+
+                            <div class="form-group">
+                                <label for="street">Ulica i numer domu</label>
+                                <input type="text" id="street" name="street" required placeholder="np. ul. Złota 44"/>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="apartment">Numer mieszkania (opcjonalnie)</label>
+                                    <input type="text" id="apartment" name="apartment" placeholder="np. 12"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">Miasto</label>
+                                    <input type="text" id="city" name="city" required placeholder="np. Warszawa"/>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="postalCode">Kod pocztowy</label>
+                                    <input type="text" id="postalCode" name="postal_code" required placeholder="np. 00-001"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="country">Kraj</label>
+                                    <input type="text" id="country" name="country" value="Polska" required/>
+                                </div>
+                            </div>
+
+                            <div class="button-group">
+                                <button type="submit" class="btn-save">Zapisz adres</button>
+                                <button type="reset" class="btn-cancel">Anuluj</button>
+                            </div>
+                        </form>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/script/auth-guard.js"></script>
+<script>
+    // Sprawdź czy użytkownik nie jest adminem lub pracownikiem restauracji
+    fetch('/auth/check').then(r => r.json()).then(data => {
+        if (data.success && data.user) {
+            if (data.user.role_id === 1) {
+                window.location.href = '/admin';
+            } else if (data.user.role_id === 3) {
+                window.location.href = '/public/views/restaurant-orders-dashboard.html';
+            }
+        }
+    }).catch(err => console.error('Błąd sprawdzenia roli:', err));
+</script>
+<script src="/public/script/profile.js"></script>
+</body>
+</html>
