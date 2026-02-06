@@ -14,8 +14,8 @@
 <div class="cart-container">
 <!-- Header -->
 <header>
-  <div class="header-wrapper">
-    <div class="header-left">
+  <div class="header-left">
+    <div class="logo-section">
       <div class="logo-icon">
         <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
@@ -23,14 +23,30 @@
       </div>
       <h2 class="logo-text">JellyFood</h2>
     </div>
-    <nav>
-      <a href="/">Restauracje</a>
-    </nav>
-    <div class="header-right">
-      <button class="header-icon-btn">
-        <span class="material-symbols-outlined">shopping_bag</span>
+    <a href="/" class="nav-link">Restauracje</a>
+  </div>
+  <div class="header-right">
+    <button class="cart-button" id="cartButton" onclick="window.location.href='/public/views/bin.html'">
+      <span class="material-symbols-outlined">shopping_cart</span>
+      <span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <div id="authButtons">
+      <a class="login-link" href="/login">Zaloguj się</a>
+      <button class="register-btn" onclick="window.location.href='/register'">Zarejestruj się</button>
+    </div>
+    <div id="userProfile" style="display: none;" class="user-profile">
+      <button class="user-menu-btn" onclick="toggleUserMenu()">
+        <span class="material-symbols-outlined">account_circle</span>
+        <span id="userName"></span>
+        <span class="material-symbols-outlined">expand_more</span>
       </button>
-      <div class="user-avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPwhhKFRCVuX9NxyuHXaVANffy407PBpBXmMtvmLam8pqiDDHwNKOl9TIjkPdbs9bk2OhL4jiaAU9tgiXUfnEVAkco7rLO9WBi9Gd32UZH_6sNrzb-Y8c-aIeuxFsvuZhphH6CyYCCcv1DbWHDUeuFqdY6ZxgkeONVYsgWk0nn-dPRxpbaV0XUsWA8EBuX69mD-5z1M01hz5jy0tiElZgzcLyX5yxPQw_aItOirV9Nlj05ypYIG8Fc6FLcRCrC5Wq7N62YXBT7PIk');"></div>
+      <div id="userDropdown" class="user-dropdown" style="display: none;">
+        <a href="/profile" class="user-menu-item">Mój profil</a>
+        <a href="/orders" class="user-menu-item">Moje zamówienia</a>
+        <a href="/favorites" class="user-menu-item">Ulubione</a>
+        <hr class="user-menu-divider"/>
+        <button onclick="logout()" class="user-menu-item logout-btn">Wyloguj się</button>
+      </div>
     </div>
   </div>
 </header>
@@ -91,84 +107,19 @@
 </main>
 </div>
 
+<script src="/public/script/auth-guard.js"></script>
 <script>
-let cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
-
-document.addEventListener('DOMContentLoaded', () => {
-    renderCart();
-});
-
-function renderCart() {
-    const cartContainer = document.getElementById('cartItemsList');
-    
-    if (cart.length === 0) {
-        cartContainer.innerHTML = `
-            <div style="text-align: center; padding: 3rem;">
-                <span class="material-symbols-outlined" style="font-size: 4rem; color: var(--gray-400);">shopping_cart</span>
-                <p style="font-size: 1.25rem; margin-top: 1rem; color: var(--gray-500);">Twój koszyk jest pusty</p>
-                <button onclick="window.history.back()" style="margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: var(--primary); border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Wróć do zakupów</button>
-            </div>
-        `;
-        updateSummary();
-        return;
-    }
-    
-    cartContainer.innerHTML = cart.map((item, index) => `
-        <div class="cart-item">
-          <div class="item-info">
-            <div class="item-image" style="background-image: url('${item.image}');"></div>
-            <div class="item-details">
-              <p class="item-name">${item.name}</p>
-              <p class="item-price">${item.price.toFixed(2)} zł</p>
-            </div>
-          </div>
-          <div class="item-controls">
-            <div class="quantity-control">
-              <button class="qty-btn" onclick="updateQuantity(${index}, -1)">−</button>
-              <span class="qty-display">${item.quantity}</span>
-              <button class="qty-btn" onclick="updateQuantity(${index}, 1)">+</button>
-            </div>
-            <p class="item-total">${(item.price * item.quantity).toFixed(2)} zł</p>
-            <button class="remove-btn" onclick="removeItem(${index})" title="Usuń">
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-          </div>
-        </div>
-    `).join('');
-    
-    updateSummary();
-}
-
-function updateQuantity(index, delta) {
-    cart[index].quantity = Math.max(1, cart[index].quantity + delta);
-    localStorage.setItem('jellyFoodCart', JSON.stringify(cart));
-    renderCart();
-}
-
-function removeItem(index) {
-    cart.splice(index, 1);
-    localStorage.setItem('jellyFoodCart', JSON.stringify(cart));
-    renderCart();
-}
-
-function updateSummary() {
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const delivery = cart.length > 0 ? 9.99 : 0;
-    const total = subtotal + delivery;
-    
-    document.getElementById('subtotalAmount').textContent = `${subtotal.toFixed(2)} zł`;
-    document.getElementById('totalAmount').textContent = `${total.toFixed(2)} zł`;
-}
-
-document.getElementById('checkoutBtn').addEventListener('click', () => {
-    if (cart.length === 0) {
-        alert('Twój koszyk jest pusty!');
-        return;
-    }
-    
-    // Przekierowanie do complete_order.html
-    window.location.href = '/public/views/complete_order.html';
-});
+    // Sprawdź czy użytkownik nie jest adminem lub pracownikiem restauracji
+    fetch('/auth/check').then(r => r.json()).then(data => {
+        if (data.success && data.user) {
+            if (data.user.role_id === 1) {
+                window.location.href = '/admin';
+            } else if (data.user.role_id === 3) {
+                window.location.href = '/public/views/restaurant-orders-dashboard.html';
+            }
+        }
+    }).catch(err => console.error('Błąd sprawdzenia roli:', err));
 </script>
+<script src="/public/script/bin.js"></script>
 </body>
 </html>
