@@ -64,7 +64,8 @@ body.dark-mode {
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1.5rem;
   white-space: nowrap;
   border-bottom: 1px solid var(--border-light);
   padding: 1rem 1.5rem;
@@ -95,7 +96,7 @@ body.dark-mode header {
 .header-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.25rem;
   color: inherit;
 }
 
@@ -112,23 +113,10 @@ body.dark-mode header {
   letter-spacing: -0.015em;
 }
 
-.header-right {
-  display: flex;
-  flex: 1;
-  justify-content: flex-end;
-  gap: 2rem;
-}
-
 .nav-links {
-  display: none;
+  display: flex;
   align-items: center;
   gap: 2.25rem;
-}
-
-@media (min-width: 640px) {
-  .nav-links {
-    display: flex;
-  }
 }
 
 .nav-links a {
