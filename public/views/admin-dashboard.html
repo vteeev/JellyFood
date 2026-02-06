@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Panel Admina - JellyFood</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="/public/styles/main_page.css" rel="stylesheet"/>
+    <link href="/public/styles/admin-dashboard.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        <div class="max-width-wrapper">
+            <div class="inner-container">
+                <!-- Top Navigation Bar -->
+                <header>
+                    <div class="header-left">
+                        <div class="logo-section">
+                            <div class="logo-icon">
+                                <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="logo-text">JellyFood</h2>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div id="userProfile" style="display: none;" class="user-profile">
+                            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                                <span class="material-symbols-outlined">account_circle</span>
+                                <span id="userName"></span>
+                            </button>
+                            <div id="userDropdown" class="user-dropdown" style="display: none;">
+                                <button onclick="logout()" class="user-menu-item logout-btn">
+                                    <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">logout</span>
+                                    Wyloguj się
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="admin-container">
+                    <div class="admin-header">
+                        <h1>Panel Admina</h1>
+                    </div>
+
+                    <div class="admin-tabs">
+                        <button class="tab-btn active" onclick="switchTab('restaurants')">
+                            <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">restaurant</span>
+                            Restauracje
+                        </button>
+                        <button class="tab-btn" onclick="switchTab('add-restaurant')">
+                            <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">add</span>
+                            Nowa Restauracja
+                        </button>
+                    </div>
+
+                    <!-- Restauracje Tab -->
+                    <div id="restaurants" class="tab-content active">
+                        <div class="restaurants-grid" id="restaurantsGrid">
+                            <div class="no-data">
+                                <div class="no-data-icon">🍽️</div>
+                                <p>Ładowanie restauracji...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dodaj Restaurację Tab -->
+                    <div id="add-restaurant" class="tab-content">
+                        <div class="form-wrapper">
+                            <h2 style="margin-top: 0;">Dodaj nową restaurację</h2>
+                            <form id="restaurantForm" onsubmit="handleAddRestaurant(event)">
+                                <div class="form-group">
+                                    <label for="rest_name">Nazwa restauracji *</label>
+                                    <input type="text" id="rest_name" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_desc">Opis</label>
+                                    <textarea id="rest_desc"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_phone">Telefon</label>
+                                    <input type="tel" id="rest_phone"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_street">Ulica *</label>
+                                    <input type="text" id="rest_street" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_building">Numer budynku *</label>
+                                    <input type="text" id="rest_building" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_apartment">Numer mieszkania</label>
+                                    <input type="text" id="rest_apartment"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_city">Miasto *</label>
+                                    <select id="rest_city" required>
+                                        <option value="">Wybierz lub wpisz miasto</option>
+                                    </select>
+                                    <input type="text" id="rest_city_custom" placeholder="Lub wpisz nowe miasto" style="margin-top: 8px;"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_postal">Kod pocztowy *</label>
+                                    <input type="text" id="rest_postal" required/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rest_image">Zdjęcie restauracji</label>
+                                    <input type="file" id="rest_image" accept="image/*"/>
+                                    <small style="color: #666; font-size: 12px;">Maksymalny rozmiar: 5MB. Dozwolone formaty: JPG, PNG, GIF, WebP</small>
+                                </div>
+                                <div class="form-group">
+                                    <label>Kategorie kuchni *</label>
+                                    <div id="kitchenTypesContainer" class="kitchen-types-grid">
+                                        <!-- Wypełnione przez loadKitchenTypes -->
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn-primary">Dodaj restaurację</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modals -->
+<div id="restaurantModal" class="modal">
+    <div class="modal-content">
+        <button class="back-button" onclick="closeRestaurantModal()">
+            <span class="material-symbols-outlined">arrow_back</span>
+            Wróć
+        </button>
+        <div id="restaurantModalContent">
+            <!-- Treść modala będzie ładowana dynamicznie -->
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script src="/public/script/auth-guard.js"></script>
+<script>
+    // Sprawdź rolę i ochronę strony
+    protectAdminPage();
+</script>
+<script src="/public/script/admin-dashboard.js"></script>
+</body>
+</html>
