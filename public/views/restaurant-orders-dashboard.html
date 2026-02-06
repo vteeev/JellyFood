@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Panel Restauracji - JellyFood</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="/public/styles/main_page.css" rel="stylesheet"/>
+    <link href="/public/styles/restaurant-orders-dashboard.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        <div class="max-width-wrapper">
+            <div class="inner-container">
+                <!-- Top Navigation Bar -->
+                <header>
+                    <div class="header-left">
+                        <div class="logo-section">
+                            <div class="logo-icon">
+                                <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="logo-text">JellyFood</h2>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <div id="userProfile" style="display: none;" class="user-profile">
+                            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                                <span class="material-symbols-outlined">account_circle</span>
+                                <span id="userName"></span>
+                            </button>
+                            <div id="userDropdown" class="user-dropdown" style="display: none;">
+                                <button onclick="logout()" class="user-menu-item logout-btn">
+                                    <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle; margin-right: 8px;">logout</span>
+                                    Wyloguj się
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main Content -->
+                <main class="dashboard-container">
+                    <div class="dashboard-header">
+                        <h1>Panel Restauracji</h1>
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="switchTab('active')">
+                                <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">hourglass_empty</span>
+                                Aktywne
+                            </button>
+                            <button class="tab-button" onclick="switchTab('history')">
+                                <span class="material-symbols-outlined" style="font-size: 18px; vertical-align: middle;">history</span>
+                                Historia
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Aktywne zamówienia -->
+                    <div id="active" class="orders-section active">
+                        <div class="orders-list" id="activeOrdersList">
+                            <div class="no-orders">
+                                <div class="no-orders-icon">📭</div>
+                                <p>Brak aktywnych zamówień</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Historia zamówień -->
+                    <div id="history" class="orders-section">
+                        <div class="orders-list" id="historyOrdersList">
+                            <div class="no-orders">
+                                <div class="no-orders-icon">📋</div>
+                                <p>Brak historii zamówień</p>
+                            </div>
+                        </div>
+                        <div class="pagination" id="historyPagination"></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/public/script/auth-guard.js"></script>
+<script>
+    // Sprawdź rolę i ochronę strony
+    protectRestaurantStaffPage();
+</script>
+<script src="/public/script/restaurant-orders-dashboard.js"></script>
+</body>
+</html>
