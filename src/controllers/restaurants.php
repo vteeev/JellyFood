@@ -23,6 +23,7 @@ class restaurants
             'search' => $this->handleSearch($request),
             'kitchen-types' => $this->handleKitchenTypes(),
             'by-kitchen' => $this->handleByKitchenType($request),
+            'by-city' => $this->handleByCity($request),
             default => null,
         };
     }
@@ -198,6 +199,39 @@ class restaurants
                 'data' => $restaurants,
                 'count' => count($restaurants),
                 'kitchen_type' => $type,
+            ]);
+        } catch (Exception $e) {
+            json_response([
+                'success' => false,
+                'message' => 'Błąd pobrania restauracji',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * GET /restaurants/by-city?city=Warszawa
+     * Pobranie restauracji po mieście
+     */
+    private function handleByCity(array $request): string
+    {
+        $city = $request['city'] ?? '';
+
+        if (empty($city)) {
+            return json_encode([
+                'success' => false,
+                'message' => 'Miasto jest wymagane',
+            ]);
+        }
+
+        try {
+            $restaurants = $this->restaurantRepository->getRestaurantsByCity($city);
+
+            json_response([
+                'success' => true,
+                'data' => $restaurants,
+                'count' => count($restaurants),
+                'city' => $city,
             ]);
         } catch (Exception $e) {
             json_response([
