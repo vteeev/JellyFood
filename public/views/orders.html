@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Moje zamówienia - JellyFood</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+    <link href="/public/styles/main_page.css" rel="stylesheet"/>
+    <link href="/public/styles/orders.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="main-wrapper">
+    <div class="content-wrapper">
+        <div class="max-width-wrapper">
+            <div class="inner-container">
+                <!-- Top Navigation Bar -->
+                <header>
+                    <div class="header-left">
+                        <div class="logo-section">
+                            <div class="logo-icon">
+                                <svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M44 4H30.6666V17.3334H17.3334V30.6666H4V44H44V4Z"></path>
+                                </svg>
+                            </div>
+                            <h2 class="logo-text">JellyFood</h2>
+                        </div>
+                    </div>
+                    <div class="header-right">
+                        <button class="cart-button" id="cartButton" onclick="window.location.href='/public/views/bin.html'">
+                            <span class="material-symbols-outlined">shopping_cart</span>
+                            <span class="cart-badge" id="cartBadge">0</span>
+                        </button>
+                        <div id="userProfile" style="display: none;" class="user-profile">
+                            <button class="user-menu-btn" onclick="toggleUserMenu()">
+                                <span class="material-symbols-outlined">account_circle</span>
+                                <span id="userName"></span>
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </button>
+                            <div id="userDropdown" class="user-dropdown" style="display: none;">
+                                <a href="/profile" class="user-menu-item">Mój profil</a>
+                                <a href="/orders" class="user-menu-item">Moje zamówienia</a>
+                                <hr class="user-menu-divider"/>
+                                <button onclick="logout()" class="user-menu-item logout-btn">Wyloguj się</button>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <main>
+                    <a href="/" class="back-button">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        Powrót do głównej
+                    </a>
+
+                    <div class="orders-container">
+                        <div class="orders-header">
+                            <h1>Moje zamówienia</h1>
+                        </div>
+
+                        <!-- Statistics -->
+                        <div class="stats-grid" id="statsGrid">
+                            <div class="stat-card">
+                                <div class="stat-label">Liczba zamówień</div>
+                                <div class="stat-value" id="totalOrders">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Razem wydano</div>
+                                <div class="stat-value" id="totalSpent">0 zł</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-label">Średnia wartość</div>
+                                <div class="stat-value" id="averageValue">0 zł</div>
+                            </div>
+                        </div>
+
+                        <!-- Orders List -->
+                        <div class="orders-list" id="ordersList">
+                            <div style="text-align: center; padding: 40px;">
+                                <p style="color: #999;">Załadowywanie...</p>
+                            </div>
+                        </div>
+
+                        <!-- Pagination -->
+                        <div class="pagination" id="pagination"></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Order Details Modal -->
+<div id="orderModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Szczegóły zamówienia</h2>
+            <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+        </div>
+        <div id="modalBody">
+            <!-- Order details will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<script src="/public/script/auth-guard.js"></script>
+<script>
+    // Sprawdź czy użytkownik nie jest adminem lub pracownikiem restauracji
+    fetch('/auth/check').then(r => r.json()).then(data => {
+        if (data.success && data.user) {
+            if (data.user.role_id === 1) {
+                window.location.href = '/admin';
+            } else if (data.user.role_id === 3) {
+                window.location.href = '/public/views/restaurant-orders-dashboard.html';
+            }
+        }
+    }).catch(err => console.error('Błąd sprawdzenia roli:', err));
+</script>
+<script src="/public/script/orders.js"></script>
+</body>
+</html>
