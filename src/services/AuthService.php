@@ -18,9 +18,10 @@ class AuthService
      * @param string $password
      * @param string $fullName
      * @param string|null $phone
+        * @param array|null $address Tablica z kluczami: street, apartment_number, city, postal_code, country
      * @return array ['success' => bool, 'message' => string, 'user_id' => int|null]
      */
-    public function register(string $email, string $password, string $fullName, string $phone = null): array
+    public function register(string $email, string $password, string $fullName, string $phone = null, array $address = null): array
     {
         // Walidacja
         $validation = $this->validateRegistrationInput($email, $password, $fullName);
@@ -45,7 +46,7 @@ class AuthService
         $passwordHash = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
 
         // Rejestracja użytkownika
-        $userId = $this->userRepository->register($email, $passwordHash, $fullName, $phone);
+        $userId = $this->userRepository->register($email, $passwordHash, $fullName, $phone, $address);
 
         if ($userId) {
             return [
