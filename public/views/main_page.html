@@ -26,10 +26,21 @@
 </div>
 <h2 class="logo-text">JellyFood</h2>
 </div>
-<label class="location-input">
+<div class="location-input">
 <span class="material-symbols-outlined">location_on</span>
-<input placeholder="Wpisz adres dostawy" value="Warszawa, Złota 44"/>
-</label>
+<select id="citySelect" class="city-select" onchange="filterByCity()">
+<option value="">Wszystkie miasta</option>
+<option value="Warszawa" selected>Warszawa</option>
+<option value="Kraków">Kraków</option>
+<option value="Rzeszów">Rzeszów</option>
+<option value="Lublin">Lublin</option>
+<option value="Wrocław">Wrocław</option>
+<option value="Szczecin">Szczecin</option>
+<option value="Poznań">Poznań</option>
+<option value="Gdańsk">Gdańsk</option>
+<option value="Tomaszów Lubelski">Tomaszów Lubelski</option>
+</select>
+</div>
 </div>
 <div class="header-right">
 <button class="cart-button" id="cartButton" onclick="window.location.href='/public/views/bin.html'">
@@ -49,7 +60,6 @@
   <div id="userDropdown" class="user-dropdown" style="display: none;">
     <a href="/profile" class="user-menu-item">Mój profil</a>
     <a href="/orders" class="user-menu-item">Moje zamówienia</a>
-    <a href="/favorites" class="user-menu-item">Ulubione</a>
     <hr class="user-menu-divider"/>
     <button onclick="logout()" class="user-menu-item logout-btn">Wyloguj się</button>
   </div>
@@ -78,30 +88,13 @@
 </div>
 </label>
 </div>
-<div class="filters-wrapper">
-<div style="position: relative;">
-<button class="filter-btn" onclick="toggleSortMenu()">
-<span class="material-symbols-outlined">swap_vert</span>
-<span>Sortuj</span>
-</button>
-<!-- Sort Menu -->
-<div id="sortMenu" class="filter-menu" style="display: none;">
-<button onclick="sortRestaurants('name')" class="filter-option">Nazwa (A-Z)</button>
-<button onclick="sortRestaurants('rating')" class="filter-option">Ocena</button>
-<button onclick="sortRestaurants('delivery')" class="filter-option">Czas dostawy</button>
 </div>
-</div>
-<div style="position: relative;">
-<button class="filter-btn" onclick="toggleKitchenFilterMenu()">
-<span>Rodzaj kuchni</span>
-<span class="material-symbols-outlined">expand_more</span>
-</button>
-<!-- Kitchen Type Filter Dropdown -->
-<div id="kitchenFilterMenu" class="filter-menu" style="display: none;">
-<button onclick="filterByKitchenType(null)" class="filter-option active">Wszystkie</button>
-<div id="kitchenTypesList"></div>
-</div>
-</div>
+
+<!-- Kitchen Types Section -->
+<div class="kitchen-types-section">
+<h3 class="section-title">Rodzaje kuchni</h3>
+<div class="kitchen-types-grid" id="kitchenTypesGrid">
+<!-- Rodzaje kuchni będą ładowane dynamicznie -->
 </div>
 </div>
 
@@ -117,250 +110,18 @@
 </div>
 </div>
 
+<script src="/public/script/auth-guard.js"></script>
 <script>
-let allRestaurants = [];
-let filteredRestaurants = [];
-let selectedKitchenType = null;
-
-// Sprawdzenie statusu autentykacji
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    const response = await fetch('/auth/check');
-    const data = await response.json();
-    
-    if (data.success && data.user) {
-      // Użytkownik jest zalogowany
-      const authButtons = document.getElementById('authButtons');
-      const userProfile = document.getElementById('userProfile');
-      const userName = document.getElementById('userName');
-      
-      authButtons.style.display = 'none';
-      userProfile.style.display = 'flex';
-      
-      // Wyświetl pierwsze imię
-      const firstName = data.user.full_name.split(' ')[0];
-      userName.textContent = firstName;
-    }
-  } catch (error) {
-    console.error('Błąd sprawdzenia autentykacji:', error);
-  }
-
-  // Załaduj restauracje i typy kuchni
-  loadRestaurants();
-  loadKitchenTypes();
-});
-
-async function loadRestaurants() {
-  try {
-    const response = await fetch('/restaurants');
-    const data = await response.json();
-    
-    if (data.success) {
-      allRestaurants = data.data;
-      filteredRestaurants = allRestaurants;
-      displayRestaurants(filteredRestaurants);
-    }
-  } catch (error) {
-    console.error('Błąd ładowania restauracji:', error);
-  }
-}
-
-async function loadKitchenTypes() {
-  try {
-    const response = await fetch('/restaurants/kitchen-types');
-    const data = await response.json();
-    
-    if (data.success) {
-      const kitchenTypesList = document.getElementById('kitchenTypesList');
-      kitchenTypesList.innerHTML = '';
-      
-      data.data.forEach(type => {
-        const button = document.createElement('button');
-        button.className = 'filter-option';
-        button.textContent = type.name;
-        button.onclick = () => filterByKitchenType(type.name);
-        kitchenTypesList.appendChild(button);
-      });
-    }
-  } catch (error) {
-    console.error('Błąd ładowania typów kuchni:', error);
-  }
-}
-
-function displayRestaurants(restaurants) {
-  const grid = document.getElementById('restaurantsGrid');
-  grid.innerHTML = '';
-  
-  if (restaurants.length === 0) {
-    grid.innerHTML = '<p class="no-results">Nie znaleziono restauracji</p>';
-    return;
-  }
-  
-  restaurants.forEach(restaurant => {
-    const card = document.createElement('div');
-    card.className = 'restaurant-card';
-    
-    // Wybierz losowy obraz dla każdej restauracji
-    const images = [
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuAUY-8uTxHfx_7I-Wv4BDy7wiu0BwnRvv7Ov7g2G3gv7evoEYO1O5CMtUvWvG6jmOS4NNzwQgX-ZdtLWOaxWlMbH29w7d1p_HaLu4-va_Cn8Y2MKqftmTe0NZlaWNAN1ySyv8WfpQ2EhN3bObb50iftHHCekjXTohNkEjCz-9PfxhxKCE5XFLrA9j5Lo_pjBzmad_A8CyAh8IrF-FB8K9bfdyN2fouNeFene6N4pwzP0ttvh8J4RR8jxXDaOa4duwfrjsYPeFfi-p4',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBI5iu_qjgozajZwLIvru_LbCxMMtQ4DoVkuVVPfXGhHDnK2kuHNfZYd_eD6YfKCSLGfcuLljkqPMhwb91NpCrohf0mI9jYRh3HKTO_pgHFkTLkeGCDY09VTsYdutZzHGQM_oQxYyWkNTBqQznHr-NghAELleWqRlRRB1JIFm9BSeiBrMcTftNEy6VbDJ-TgW3R2F81879RVlriCi03JEq3X7IRU7Z5zvEeCg3kluZnJ1I4py2T8nV9bqjtuOW_VVWisuVyw-aAGGo',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuB09Dq3rhCl9Q3Q-jj9qpnLXGnMDzcFIK3H99IEJ89wDSInuz4FaPnMq-1DshKchDug8_9DfiwM-Euos-_wPfpbcU-o7AJ5wUf6M2m9z881BJi_UXlUaKmfA8rRDQcdDbYDttHtmpGbFyjZWN8tw43CnbXYeaLwZfcxM6TD4XNEilN92xf6eLAyvgFAu5Q0Ztv46hVHADso6LzUp_ifxHXB35Ll2zR1eOETbKzpiFcVszCIepbY6HDHuuRMnUXDyHbdg9g1ITfmK0A',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuB6Zk-pHmGxF80-NM4N8BvLeNTszai7B3D2bCcyLB7CokyJiu-dXiG_mrKSkOmyZ_LNMDXjdQLSUdYMpjFe7XOHKX3tfoO3vtdaXjgxfk4I4GV2Vp3Z9cNcSGUaoxRe25YKJinXzbNi_LoDgJ2IG2gJ-YxYvpI5DVeuXRMQJro5Q9eAseFRab7xhbuJZ7nkIgjjbXUZr6xlYMp4GxPcn-1A5jmu-j5Pu-q6sqc1EVrYyeXYVx4Dk76dDdiMK2MJJbjeEfuJeReuyOQ',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBqUuExKrjJAucDG7uS9e7QyL_tMbXAMAu2iYinbUJcNyseLXdY3KGJ_GjIHUMR3UGTz-RETQQmGp51WHOts0z60MDSvMQN4Ri0oHHcctIIAfdApla4Z5jgxTIMQrpY2w_RzoxCUHVInzFKJ7x4buPtNLLK-pXLvsadTFGYQvgNe004S9TB2jXuRGXCqzvL31Nlp-yrbzLlUtuufe6RBkAQole67yf0GfZ1jz7NagmrW3wy4uCbeOC9oQlk3nh6I9V3_qssEBGNmQ0',
-      'https://lh3.googleusercontent.com/aida-public/AB6AXuBbBZnP7PSiP-HZjbxDnMWVZNlIgWLZ_REqRtp59EhJa2vCvHrWtQTRVpt-k4dOFJrBJTumsE16vLirF2a_3TbxGtWPHyh9l6NNl7UV5OqDfV5RzApYAnH2G1WeClaKp_SHoCukWkI4QkT4m8FR677YoiNvto2V0fvfL9usmOZVj7QUQjSdPzz76-7c-1_wmdQNJADGndYZuJtLrorXMDXeEDkHYLdXnMNSsk4aljMk2gvjqJ9gF_4B_Mf4-w5R-ZA3yW22hzKlNz8'
-    ];
-    
-    const imageUrl = images[restaurant.id % images.length];
-    const kitchenTypes = Array.isArray(restaurant.kitchen_types) 
-      ? restaurant.kitchen_types.join(', ') 
-      : restaurant.kitchen_types.toString().slice(1, -1).replaceAll(',', ', ');
-    
-    card.innerHTML = `
-      <div class="restaurant-card-image" style="background-image: url('${imageUrl}');"></div>
-      <div class="restaurant-card-content">
-        <p class="restaurant-name">${restaurant.name}</p>
-        <p class="restaurant-info">${kitchenTypes} • 30-40 min • 15 zł</p>
-        <div class="restaurant-rating">
-          <span class="rating-star">★</span>
-          <span>4.${(restaurant.id % 3) + 5} (${200 + restaurant.id * 50} opinii)</span>
-        </div>
-      </div>
-    `;
-    
-    card.addEventListener('click', () => {
-      window.location.href = `/restaurant?id=${restaurant.id}`;
-    });
-    
-    grid.appendChild(card);
-  });
-}
-
-async function searchRestaurants() {
-  const query = document.getElementById('searchInput').value;
-  
-  if (query.length < 2) {
-    filteredRestaurants = allRestaurants;
-    displayRestaurants(filteredRestaurants);
-    return;
-  }
-  
-  try {
-    const response = await fetch(`/restaurants/search?q=${encodeURIComponent(query)}`);
-    const data = await response.json();
-    
-    if (data.success) {
-      filteredRestaurants = data.data;
-      displayRestaurants(filteredRestaurants);
-    }
-  } catch (error) {
-    console.error('Błąd wyszukiwania:', error);
-  }
-}
-
-function filterByKitchenType(type) {
-  selectedKitchenType = type;
-  
-  // Aktualizuj aktywny przycisk
-  document.querySelectorAll('.filter-option').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  if (type === null) {
-    filteredRestaurants = allRestaurants;
-    document.querySelectorAll('.filter-option')[0].classList.add('active');
-  } else {
-    filteredRestaurants = allRestaurants.filter(r => 
-      Array.isArray(r.kitchen_types) 
-        ? r.kitchen_types.includes(type)
-        : r.kitchen_types.toString().includes(type)
-    );
-    event.target.classList.add('active');
-  }
-  
-  displayRestaurants(filteredRestaurants);
-  toggleKitchenFilterMenu();
-}
-
-function sortRestaurants(type) {
-  if (type === 'name') {
-    filteredRestaurants.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (type === 'rating') {
-    filteredRestaurants.sort((a, b) => (4.5 + (b.id % 3) * 0.2) - (4.5 + (a.id % 3) * 0.2));
-  } else if (type === 'delivery') {
-    filteredRestaurants.sort((a, b) => a.id - b.id);
-  }
-  displayRestaurants(filteredRestaurants);
-  toggleSortMenu();
-}
-
-function toggleSortMenu() {
-  const menu = document.getElementById('sortMenu');
-  const kitchenMenu = document.getElementById('kitchenFilterMenu');
-  kitchenMenu.style.display = 'none';
-  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-}
-
-function toggleKitchenFilterMenu() {
-  const menu = document.getElementById('kitchenFilterMenu');
-  const sortMenu = document.getElementById('sortMenu');
-  sortMenu.style.display = 'none';
-  menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-}
-
-// Zamknięcie menu gdy klikniesz gdzie indziej
-document.addEventListener('click', (e) => {
-  const filterMenu = document.getElementById('kitchenFilterMenu');
-  const sortMenu = document.getElementById('sortMenu');
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  
-  let clickedInsideMenu = false;
-  filterBtns.forEach(btn => {
-    if (btn.contains(e.target) || (btn.parentElement && btn.parentElement.contains(e.target))) {
-      clickedInsideMenu = true;
-    }
-  });
-  
-  if (!clickedInsideMenu && filterMenu && !filterMenu.contains(e.target)) {
-    filterMenu.style.display = 'none';
-  }
-  if (!clickedInsideMenu && sortMenu && !sortMenu.contains(e.target)) {
-    sortMenu.style.display = 'none';
-  }
-});
-
-function toggleUserMenu() {
-  const dropdown = document.getElementById('userDropdown');
-  dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-}
-
-// Zamknięcie menu użytkownika gdy klikniesz gdzie indziej
-document.addEventListener('click', (e) => {
-  const userProfile = document.getElementById('userProfile');
-  if (userProfile && !userProfile.contains(e.target)) {
-    document.getElementById('userDropdown').style.display = 'none';
-  }
-});
-
-async function logout() {
-  try {
-    await fetch('/auth/logout');
-    window.location.href = '/';
-  } catch (error) {
-    console.error('Błąd wylogowania:', error);
-  }
-}
-
-// Funkcja aktualizacji licznika koszyka
-function updateCartBadge() {
-  const cart = JSON.parse(localStorage.getItem('jellyFoodCart')) || [];
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const badge = document.getElementById('cartBadge');
-  if (badge) {
-    badge.textContent = totalItems;
-    badge.style.display = totalItems > 0 ? 'flex' : 'none';
-  }
-}
-
-// Aktualizuj licznik koszyka przy ładowaniu strony
-updateCartBadge();
+    // Sprawdź czy użytkownik nie jest adminem lub pracownikiem restauracji
+    // Admin i pracownicy restauracji są automatycznie redirectowani
+    fetch('/auth/check').then(r => r.json()).then(data => {
+        if (data.success && data.user) {
+            if (data.user.role_id === 1) {
+                window.location.href = '/admin';
+            } else if (data.user.role_id === 3) {
+                window.location.href = '/public/views/restaurant-orders-dashboard.html';
+            }
+        }
+    }).catch(err => console.error('Błąd sprawdzenia roli:', err));
 </script>
+<script src="/public/script/main_page.js"></script>
