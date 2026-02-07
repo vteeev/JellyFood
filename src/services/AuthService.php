@@ -5,6 +5,9 @@ require_once __DIR__ . '/../repository/UserRepository.php';
 class AuthService
 {
     private UserRepository $userRepository;
+    private const MAX_LOGIN_ATTEMPTS = 5;
+    private const ATTEMPT_WINDOW_SECONDS = 600; // 10 min
+    private const BLOCK_SECONDS = 900; // 15 min
 
     public function __construct()
     {
@@ -72,6 +75,21 @@ class AuthService
      */
     public function login(string $email, string $password): array
     {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        $throttleKey = $this->getLoginThrottleKey($email);
+        $blockInfo = $this->getLoginBlockInfo($throttleKey);
+        if ($blockInfo['blocked']) {
+            return [
+                'success' => false,
+                'message' => 'Zbyt wiele nieudanych prób. Spróbuj ponownie za kilka minut.',
+                'user' => null,
+                'blocked_until' => $blockInfo['blocked_until'],
+            ];
+        }
+
         // Walidacja podstawowa
         if (empty($email) || empty($password)) {
             return [
@@ -85,6 +103,7 @@ class AuthService
         $user = $this->userRepository->getUserByEmail($email);
 
         if (!$user) {
+            $this->recordFailedLoginAttempt($throttleKey);
             return [
                 'success' => false,
                 'message' => 'Niepoprawny email lub hasło',
@@ -94,6 +113,7 @@ class AuthService
 
         // Weryfikacja hasła
         if (!password_verify($password, $user['password_hash'])) {
+            $this->recordFailedLoginAttempt($throttleKey);
             return [
                 'success' => false,
                 'message' => 'Niepoprawny email lub hasło',
@@ -107,10 +127,7 @@ class AuthService
         // Usunięcie hasła z odpowiedzi
         unset($user['password_hash']);
 
-        // Uruchomienie sesji
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        $this->clearLoginAttempts($throttleKey);
 
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_email'] = $user['email'];
@@ -122,6 +139,80 @@ class AuthService
             'message' => 'Logowanie pomyślne',
             'user' => $user,
         ];
+    }
+    
+    // Tworzy unikalny klucz
+    private function getLoginThrottleKey(string $email): string
+    {
+        $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+        $normalizedEmail = strtolower(trim($email));
+        return sha1($ip . '|' . $normalizedEmail);
+    }
+
+    // sprawdza czy jest blokada
+    // wykonywane na poczatku login()
+    private function getLoginBlockInfo(string $key): array
+    {
+        $now = time();
+        $data = $_SESSION['login_throttle'][$key] ?? [
+            'count' => 0,
+            'first_attempt' => $now,
+            'blocked_until' => 0,
+        ];
+
+        if (!empty($data['blocked_until']) && $now < $data['blocked_until']) {
+            return [
+                'blocked' => true,
+                'blocked_until' => $data['blocked_until'],
+            ];
+        }
+
+        if (($now - ($data['first_attempt'] ?? $now)) > self::ATTEMPT_WINDOW_SECONDS) {
+            $data = [
+                'count' => 0,
+                'first_attempt' => $now,
+                'blocked_until' => 0,
+            ];
+            $_SESSION['login_throttle'][$key] = $data;
+        }
+
+        return [
+            'blocked' => false,
+            'blocked_until' => 0,
+        ];
+    }
+    // rejestrowanie nieudanej próby
+    private function recordFailedLoginAttempt(string $key): void
+    {
+        $now = time();
+        $data = $_SESSION['login_throttle'][$key] ?? [
+            'count' => 0,
+            'first_attempt' => $now,
+            'blocked_until' => 0,
+        ];
+
+        if (($now - ($data['first_attempt'] ?? $now)) > self::ATTEMPT_WINDOW_SECONDS) {
+            $data = [
+                'count' => 0,
+                'first_attempt' => $now,
+                'blocked_until' => 0,
+            ];
+        }
+
+        $data['count'] = ($data['count'] ?? 0) + 1;
+
+        if ($data['count'] >= self::MAX_LOGIN_ATTEMPTS) {
+            $data['blocked_until'] = $now + self::BLOCK_SECONDS;
+        }
+
+        $_SESSION['login_throttle'][$key] = $data;
+    }
+    // czyszczenie po poprawnym logowaniu
+    private function clearLoginAttempts(string $key): void
+    {
+        if (isset($_SESSION['login_throttle'][$key])) {
+            unset($_SESSION['login_throttle'][$key]);
+        }
     }
 
     /**
